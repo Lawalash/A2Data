@@ -1,0 +1,866 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Nossos Serviços | TechSolutions</title>
+  <!-- Font Awesome para ícones -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <!-- Animate.css (opcional para animações) -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css">
+  <style>
+    /* Variáveis de cores e configurações gerais */
+    :root {
+      --azul-escuro: #043959;
+      --azul-medio: #466FA6;
+      --azul-claro: #8EA3BF;
+      --cinza: #A8B5BF;
+      --branco: #F2F2F2;
+    }
+
+    /* Reset e estilos base */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+
+    body {
+      background-color: var(--branco);
+      color: #333;
+      overflow-x: hidden;
+    }
+
+    /* Header personalizado */
+    .navbar {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      padding: 20px 5%;
+      z-index: 1000;
+      backdrop-filter: blur(10px);
+      background-color: rgba(4, 57, 89, 0.2);
+    }
+
+    /* Botão Voltar centralizado */
+    .back-button {
+      position: absolute;
+      left: 50%;
+      transform: translateX(-50%);
+      color: var(--branco);
+      background: rgba(142, 163, 191, 0.3);
+      border: none;
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.2rem;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+
+    .back-button:hover {
+      background-color: var(--azul-claro);
+      transform: translateX(-50%) translateY(-3px);
+    }
+
+    /* Logo posicionada à direita */
+    .logo {
+      position: absolute;
+      right: 5%;
+      display: flex;
+      align-items: center;
+    }
+
+    .logo-text {
+      font-size: 1.8rem;
+      font-weight: 700;
+      letter-spacing: 2px;
+      color: var(--branco);
+    }
+
+    .logo-highlight {
+      position: absolute;
+      bottom: -2px;
+      left: 0;
+      width: 40%;
+      height: 3px;
+      background: var(--azul-claro);
+      border-radius: 2px;
+    }
+
+    /* Conteúdo Principal */
+    .main-content {
+      padding-top: 120px;
+      padding-bottom: 50px;
+    }
+
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 20px;
+    }
+
+    .page-title {
+      text-align: center;
+      margin-bottom: 60px;
+    }
+
+    .page-title h1 {
+      font-size: 2.5rem;
+      color: var(--azul-escuro);
+      margin-bottom: 15px;
+    }
+
+    .page-title p {
+      font-size: 1.1rem;
+      color: #666;
+      max-width: 700px;
+      margin: 0 auto;
+    }
+
+    /* Grid de Serviços */
+    .services-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+      gap: 30px;
+    }
+
+    /* Card de Serviço */
+    .service-card {
+      background: white;
+      border-radius: 12px;
+      overflow: hidden;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+      transition: all 0.3s ease;
+      position: relative;
+    }
+
+    .service-card:hover {
+      transform: translateY(-10px);
+      box-shadow: 0 15px 35px rgba(0, 0, 0, 0.15);
+    }
+
+    .service-visual {
+      height: 200px;
+      background-color: var(--azul-escuro);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .service-content {
+      padding: 25px;
+    }
+
+    .service-content h3 {
+      font-size: 1.5rem;
+      color: var(--azul-escuro);
+      margin-bottom: 15px;
+      position: relative;
+      padding-bottom: 15px;
+    }
+
+    .service-content h3:after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 50px;
+      height: 3px;
+      background-color: var(--azul-claro);
+    }
+
+    .service-content p {
+      color: #666;
+      margin-bottom: 20px;
+      line-height: 1.6;
+    }
+
+    /* Removendo os pontos de decoração da lista */
+    .benefits-list {
+      margin-bottom: 25px;
+      list-style: none;
+      padding-left: 0;
+    }
+
+    .benefits-list li {
+      margin-bottom: 10px;
+      /* Removido o pseudo-elemento que adicionava os ícones */
+    }
+
+    .service-cta {
+      display: inline-block;
+      background-color: var(--azul-medio);
+      color: white;
+      padding: 10px 25px;
+      border-radius: 6px;
+      text-decoration: none;
+      font-weight: 600;
+      transition: all 0.3s ease;
+    }
+
+    .service-cta:hover {
+      background-color: var(--azul-escuro);
+      transform: translateY(-3px);
+      box-shadow: 0 5px 15px rgba(4, 57, 89, 0.2);
+    }
+
+    /* Visuais Específicos de Cada Serviço */
+    /* Análise de Dados */
+    .data-analysis-visual {
+      background: linear-gradient(135deg, #043959, #466FA6);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .dashboard-mock {
+      width: 90%;
+      height: 80%;
+      background: rgba(255, 255, 255, 0.1);
+      border-radius: 8px;
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      grid-template-rows: repeat(2, 1fr);
+      gap: 10px;
+      padding: 10px;
+    }
+
+    .dashboard-card {
+      background: rgba(255, 255, 255, 0.2);
+      border-radius: 6px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      padding: 5px;
+    }
+
+    .dashboard-card.wide {
+      grid-column: span 2;
+    }
+
+    .dashboard-card.tall {
+      grid-row: span 2;
+    }
+
+    .chart-bar {
+      width: 5px;
+      background: rgba(255, 255, 255, 0.8);
+      margin: 0 2px;
+      border-radius: 3px;
+    }
+
+    .chart-container {
+      display: flex;
+      align-items: flex-end;
+      height: 40px;
+    }
+
+    .chart-line {
+      height: 40px;
+      position: relative;
+      width: 90%;
+    }
+
+    .chart-line:after {
+      content: '';
+      position: absolute;
+      top: 50%;
+      left: 0;
+      width: 100%;
+      height: 2px;
+      background: rgba(255, 255, 255, 0.8);
+    }
+
+    .chart-point {
+      position: absolute;
+      width: 4px;
+      height: 4px;
+      background: white;
+      border-radius: 50%;
+    }
+
+    .dashboard-number {
+      font-size: 1.2rem;
+      font-weight: 700;
+      color: white;
+    }
+
+    .dashboard-label {
+      font-size: 0.7rem;
+      color: rgba(255, 255, 255, 0.7);
+    }
+
+    /* Automatização de Processos */
+    .automation-visual {
+      background: linear-gradient(135deg, #043959, #466FA6);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .automation-flow {
+      width: 90%;
+      height: 80%;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .system-icon {
+      width: 50px;
+      height: 50px;
+      background: rgba(255, 255, 255, 0.2);
+      border-radius: 10px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      color: white;
+      font-size: 1.2rem;
+    }
+
+    .flow-arrow {
+      flex: 1;
+      height: 2px;
+      background: rgba(255, 255, 255, 0.6);
+      position: relative;
+      margin: 0 10px;
+    }
+
+    .flow-arrow:after {
+      content: '';
+      position: absolute;
+      right: -5px;
+      top: -4px;
+      width: 0;
+      height: 0;
+      border-top: 5px solid transparent;
+      border-bottom: 5px solid transparent;
+      border-left: 8px solid rgba(255, 255, 255, 0.6);
+    }
+
+    /* IA Aplicada */
+    .ai-visual {
+      background: linear-gradient(135deg, #043959, #466FA6);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .neural-network {
+      width: 90%;
+      height: 80%;
+      position: relative;
+    }
+
+    .neuron {
+      position: absolute;
+      width: 12px;
+      height: 12px;
+      background: rgba(255, 255, 255, 0.8);
+      border-radius: 50%;
+    }
+
+    .neural-connection {
+      position: absolute;
+      height: 1px;
+      background: rgba(255, 255, 255, 0.4);
+      transform-origin: 0 0;
+    }
+
+    /* Aplicativos Mobile */
+    .mobile-visual {
+      background: linear-gradient(135deg, #043959, #466FA6);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .phone-mockup {
+      width: 80px;
+      height: 160px;
+      background: rgba(255, 255, 255, 0.2);
+      border-radius: 15px;
+      position: relative;
+      border: 2px solid rgba(255, 255, 255, 0.3);
+      overflow: hidden;
+    }
+
+    .phone-screen {
+      position: absolute;
+      top: 10px;
+      left: 5px;
+      right: 5px;
+      bottom: 10px;
+      background: rgba(255, 255, 255, 0.1);
+      border-radius: 8px;
+      display: flex;
+      flex-direction: column;
+      padding: 5px;
+    }
+
+    .app-bar {
+      height: 10px;
+      background: rgba(255, 255, 255, 0.3);
+      border-radius: 3px;
+      margin-bottom: 5px;
+    }
+
+    .app-content {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      gap: 5px;
+    }
+
+    .app-item {
+      height: 8px;
+      background: rgba(255, 255, 255, 0.2);
+      border-radius: 2px;
+    }
+
+    .phone-user {
+      position: absolute;
+      top: 50%;
+      left: -90px;
+      transform: translateY(-50%);
+      width: 80px;
+      height: 80px;
+    }
+
+    .user-circle {
+      width: 30px;
+      height: 30px;
+      background: rgba(255, 255, 255, 0.3);
+      border-radius: 50%;
+      position: absolute;
+      top: 0;
+      left: 50%;
+      transform: translateX(-50%);
+    }
+
+    .user-body {
+      width: 40px;
+      height: 50px;
+      background: rgba(255, 255, 255, 0.3);
+      border-radius: 10px;
+      position: absolute;
+      top: 35px;
+      left: 50%;
+      transform: translateX(-50%);
+    }
+
+    /* Desenvolvimento Web */
+    .web-visual {
+      background: linear-gradient(135deg, #043959, #466FA6);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .browser-mockup {
+      width: 90%;
+      height: 80%;
+      background: rgba(255, 255, 255, 0.1);
+      border-radius: 8px;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .browser-bar {
+      height: 20px;
+      background: rgba(255, 255, 255, 0.2);
+      display: flex;
+      align-items: center;
+      padding: 0 10px;
+    }
+
+    .browser-buttons {
+      display: flex;
+      gap: 5px;
+    }
+
+    .browser-dot {
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: rgba(255, 255, 255, 0.6);
+    }
+
+    .browser-address {
+      flex: 1;
+      height: 10px;
+      background: rgba(255, 255, 255, 0.1);
+      border-radius: 3px;
+      margin: 0 10px;
+    }
+
+    .browser-content {
+      flex: 1;
+      padding: 10px;
+      display: grid;
+      grid-template-columns: 1fr 2fr;
+      grid-template-rows: auto 1fr;
+      gap: 10px;
+    }
+
+    .browser-header {
+      grid-column: 1 / -1;
+      height: 15px;
+      background: rgba(255, 255, 255, 0.2);
+      border-radius: 3px;
+    }
+
+    .browser-sidebar {
+      grid-row: 2;
+      background: rgba(255, 255, 255, 0.15);
+      border-radius: 3px;
+      display: flex;
+      flex-direction: column;
+      gap: 5px;
+      padding: 5px;
+    }
+
+    .sidebar-item {
+      height: 8px;
+      background: rgba(255, 255, 255, 0.2);
+      border-radius: 2px;
+    }
+
+    .browser-main {
+      grid-column: 2;
+      grid-row: 2;
+      background: rgba(255, 255, 255, 0.15);
+      border-radius: 3px;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      padding: 8px;
+    }
+
+    .main-item {
+      height: 10px;
+      background: rgba(255, 255, 255, 0.2);
+      border-radius: 2px;
+    }
+
+    /* Consultoria Tecnológica (exemplo, se necessário) */
+    .consulting-visual {
+      background: linear-gradient(135deg, #043959, #466FA6);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .meeting-illustration {
+      width: 90%;
+      height: 80%;
+      position: relative;
+    }
+
+    .table {
+      position: absolute;
+      bottom: 20%;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 70%;
+      height: 10px;
+      background: rgba(255, 255, 255, 0.3);
+      border-radius: 5px;
+    }
+
+    .person {
+      position: absolute;
+      width: 20px;
+      height: 40px;
+    }
+
+    .person-head {
+      width: 15px;
+      height: 15px;
+      background: rgba(255, 255, 255, 0.4);
+      border-radius: 50%;
+      position: absolute;
+      top: 0;
+      left: 50%;
+      transform: translateX(-50%);
+    }
+
+    .person-body {
+      width: 20px;
+      height: 25px;
+      background: rgba(255, 255, 255, 0.3);
+      border-radius: 5px;
+      position: absolute;
+      top: 15px;
+      left: 0;
+    }
+
+    /* Animações */
+    @keyframes pulse {
+      0%, 100% { transform: scale(1); }
+      50% { transform: scale(1.05); }
+    }
+
+    @keyframes fadeInUp {
+      from {
+        opacity: 0;
+        transform: translateY(20px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    @keyframes float {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-5px); }
+    }
+
+    @keyframes blink {
+      0%, 100% { opacity: 0.6; }
+      50% { opacity: 1; }
+    }
+
+    @keyframes typing {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-2px); }
+    }
+
+    /* Media Queries para Responsividade */
+    @media (max-width: 1024px) {
+      .services-grid {
+        grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+      }
+      .page-title h1 {
+        font-size: 2.2rem;
+      }
+    }
+
+    @media (max-width: 768px) {
+      .services-grid {
+        grid-template-columns: 1fr;
+        max-width: 500px;
+        margin: 0 auto;
+      }
+      .navbar {
+        padding: 15px 5%;
+      }
+      .logo-text {
+        font-size: 1.5rem;
+      }
+      .page-title h1 {
+        font-size: 2rem;
+      }
+    }
+
+    @media (max-width: 480px) {
+      .service-visual {
+        height: 160px;
+      }
+      .service-content {
+        padding: 20px;
+      }
+      .service-content h3 {
+        font-size: 1.3rem;
+      }
+      .main-content {
+        padding-top: 100px;
+      }
+      .page-title {
+        margin-bottom: 40px;
+      }
+      .page-title h1 {
+        font-size: 1.8rem;
+        margin-bottom: 10px;
+      }
+      .page-title p {
+        font-size: 1rem;
+      }
+    }
+  </style>
+</head>
+<body>
+  <!-- Header com botão de voltar centralizado e logo à direita -->
+  <header class="navbar">
+    <button class="back-button" onclick="window.history.back()">
+      <i class="fas fa-chevron-left"></i>
+    </button>
+    <div class="logo">
+      <div class="logo-text">TechSolutions</div>
+      <div class="logo-highlight"></div>
+    </div>
+  </header>
+
+  <!-- Conteúdo Principal -->
+  <main class="main-content">
+    <div class="container">
+      <div class="page-title">
+        <h1>Nossos Serviços</h1>
+        <p>Soluções tecnológicas personalizadas para impulsionar seu negócio e transformar ideias em resultados concretos.</p>
+      </div>
+
+      <div class="services-grid">
+        <!-- Serviço: Análise de Dados -->
+        <div class="service-card" data-aos="fade-up">
+          <div class="service-visual data-analysis-visual">
+            <div class="dashboard-mock">
+              <div class="dashboard-card">
+                <div class="dashboard-number">84%</div>
+                <div class="dashboard-label">Conversão</div>
+              </div>
+              <div class="dashboard-card">
+                <div class="dashboard-number">12.3k</div>
+                <div class="dashboard-label">Acessos</div>
+              </div>
+              <div class="dashboard-card wide">
+                <div class="chart-container">
+                  <div class="chart-bar" style="height: 15px;"></div>
+                  <div class="chart-bar" style="height: 25px;"></div>
+                  <div class="chart-bar" style="height: 18px;"></div>
+                  <div class="chart-bar" style="height: 35px;"></div>
+                  <div class="chart-bar" style="height: 28px;"></div>
+                  <div class="chart-bar" style="height: 22px;"></div>
+                </div>
+              </div>
+              <div class="dashboard-card tall">
+                <div class="chart-line">
+                  <div class="chart-point" style="top: 20%; left: 10%;"></div>
+                  <div class="chart-point" style="top: 40%; left: 30%;"></div>
+                  <div class="chart-point" style="top: 30%; left: 50%;"></div>
+                  <div class="chart-point" style="top: 15%; left: 70%;"></div>
+                  <div class="chart-point" style="top: 25%; left: 90%;"></div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="service-content">
+            <h3>Análise de Dados</h3>
+            <p>Transforme dados brutos em insights valiosos para seu negócio. Nossa equipe de especialistas utiliza técnicas avançadas de análise para identificar padrões, tendências e oportunidades ocultas em seus dados.</p>
+            <ul class="benefits-list">
+              <li>Dashboards interativos e personalizados</li>
+              <li>Relatórios analíticos detalhados</li>
+              <li>Previsões baseadas em tendências históricas</li>
+              <li>Integração com múltiplas fontes de dados</li>
+            </ul>
+            <a href="data-analysis.html" class="service-cta">Saiba mais</a>
+          </div>
+        </div>
+
+        <!-- Serviço: Automatização de Processos -->
+        <div class="service-card" data-aos="fade-up" data-aos-delay="100">
+          <div class="service-visual automation-visual">
+            <div class="automation-flow">
+              <div class="system-icon">
+                <i class="fas fa-file-alt"></i>
+              </div>
+              <div class="flow-arrow"></div>
+              <div class="system-icon">
+                <i class="fas fa-cogs"></i>
+              </div>
+              <div class="flow-arrow"></div>
+              <div class="system-icon">
+                <i class="fab fa-whatsapp"></i>
+              </div>
+            </div>
+          </div>
+          <div class="service-content">
+            <h3>Automatização de Processos</h3>
+            <p>Elimine tarefas repetitivas e otimize fluxos de trabalho com nossas soluções de automatização. Integramos sistemas, conectamos aplicações e automatizamos processos para aumentar a eficiência da sua empresa.</p>
+            <ul class="benefits-list">
+              <li>Redução de erros operacionais</li>
+              <li>Economia de tempo e recursos</li>
+              <li>Integração entre sistemas existentes</li>
+              <li>Monitoramento em tempo real</li>
+            </ul>
+            <a href="automation.html" class="service-cta">Saiba mais</a>
+          </div>
+        </div>
+
+        <!-- Serviço: IA Aplicada -->
+        <div class="service-card" data-aos="fade-up" data-aos-delay="200">
+          <div class="service-visual ai-visual">
+            <div class="neural-network">
+              <div class="neuron" style="top: 20%; left: 20%;"></div>
+              <div class="neuron" style="top: 40%; left: 30%;"></div>
+              <div class="neuron" style="top: 60%; left: 20%;"></div>
+              <div class="neuron" style="top: 30%; left: 50%;"></div>
+              <div class="neuron" style="top: 50%; left: 50%;"></div>
+              <div class="neuron" style="top: 25%; left: 75%;"></div>
+              <div class="neuron" style="top: 45%; left: 75%;"></div>
+              <div class="neuron" style="top: 65%; left: 75%;"></div>
+              <!-- Conexões neurais -->
+              <div class="neural-connection" style="width: 30%; top: 20%; left: 20%; transform: rotate(15deg);"></div>
+              <div class="neural-connection" style="width: 22%; top: 20%; left: 20%; transform: rotate(30deg);"></div>
+              <div class="neural-connection" style="width: 20%; top: 40%; left: 30%; transform: rotate(10deg);"></div>
+              <div class="neural-connection" style="width: 22%; top: 60%; left: 20%; transform: rotate(-15deg);"></div>
+              <div class="neural-connection" style="width: 25%; top: 30%; left: 50%; transform: rotate(0deg);"></div>
+              <div class="neural-connection" style="width: 25%; top: 50%; left: 50%; transform: rotate(10deg);"></div>
+              <div class="neural-connection" style="width: 25%; top: 50%; left: 50%; transform: rotate(-10deg);"></div>
+            </div>
+          </div>
+          <div class="service-content">
+            <h3>IA Aplicada</h3>
+            <p>Potencialize seu negócio com aplicações práticas de Inteligência Artificial. Desenvolvemos soluções personalizadas que utilizam machine learning, processamento de linguagem natural e visão computacional para resolver problemas complexos.</p>
+            <ul class="benefits-list">
+              <li>Análise preditiva para antecipar tendências</li>
+              <li>Chatbots e assistentes virtuais inteligentes</li>
+              <li>Sistemas de recomendação personalizados</li>
+              <li>Detecção de anomalias e prevenção de fraudes</li>
+            </ul>
+            <a href="ai-aplicada.html" class="service-cta">Saiba mais</a>
+          </div>
+        </div>
+
+        <!-- Serviço: Aplicativos Mobile -->
+        <div class="service-card" data-aos="fade-up">
+          <div class="service-visual mobile-visual">
+            <div class="phone-user">
+              <div class="user-circle"></div>
+              <div class="user-body"></div>
+            </div>
+            <div class="phone-mockup">
+              <div class="phone-screen">
+                <div class="app-bar"></div>
+                <div class="app-content">
+                  <div class="app-item" style="width: 70%;"></div>
+                  <div class="app-item" style="width: 90%;"></div>
+                  <div class="app-item" style="width: 50%;"></div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="service-content">
+            <h3>Aplicativos Mobile</h3>
+            <p>Desenvolvemos aplicativos mobile intuitivos e responsivos para levar sua empresa aonde seus clientes estiverem. Oferecemos soluções para Android e iOS com designs modernos e interfaces amigáveis.</p>
+            <ul class="benefits-list">
+              <li>Interface intuitiva e moderna</li>
+              <li>Desenvolvimento para múltiplas plataformas</li>
+              <li>Integração com serviços e APIs</li>
+              <li>Otimização de performance e segurança</li>
+            </ul>
+            <a href="mobile.html" class="service-cta">Saiba mais</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <!-- Scripts externos (ex: AOS para animações) -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.js"></script>
+  <script>
+    AOS.init({
+      duration: 800,
+      easing: 'slide',
+      once: true
+    });
+  </script>
+</body>
+</html>
