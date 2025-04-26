@@ -1,0 +1,1023 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Formulário de Agendamento - A2 Data Consultoria</title>
+  <style>
+    :root {
+      --azul-escuro: #043959;
+      --azul-medio: #466FA6;
+      --azul-claro: #8EA3BF;
+      --cinza: #A8B5BF;
+      --branco: #F2F2F2;
+      --cinza-claro: #eaeaea;
+      --sombra: 0 4px 12px rgba(0, 0, 0, 0.1);
+    }
+    
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Segoe UI', sans-serif;
+    }
+    
+    body {
+      background-color: #f7f9fc;
+      display: flex;
+      flex-direction: column;
+      min-height: 100vh;
+    }
+    
+    header {
+      background-color: white;
+      box-shadow: var(--sombra);
+      padding: 15px 20px;
+      position: relative;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    
+    .back-button {
+      position: absolute;
+      left: 20px;
+      background: none;
+      border: none;
+      font-size: 1.5rem;
+      color: var(--azul-escuro);
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      transition: background-color 0.2s;
+    }
+    
+    .back-button:hover {
+      background-color: rgba(0, 0, 0, 0.05);
+    }
+    
+    .header-title {
+      font-size: 1.2rem;
+      font-weight: 600;
+      color: var(--azul-escuro);
+    }
+    
+    .form-container {
+      max-width: 500px;
+      width: 100%;
+      margin: 30px auto;
+      padding: 0 20px;
+    }
+    
+    .progress-container {
+      margin-bottom: 30px;
+    }
+    
+    .progress-bar {
+      display: flex;
+      justify-content: space-between;
+      position: relative;
+      margin-bottom: 30px;
+    }
+    
+    .progress-bar::before {
+      content: '';
+      position: absolute;
+      top: 50%;
+      left: 0;
+      transform: translateY(-50%);
+      height: 3px;
+      width: 100%;
+      background-color: var(--cinza-claro);
+      z-index: 1;
+    }
+    
+    .progress-fill {
+      position: absolute;
+      top: 50%;
+      left: 0;
+      transform: translateY(-50%);
+      height: 3px;
+      width: 0%;
+      background-color: var(--azul-medio);
+      transition: width 0.3s ease;
+      z-index: 2;
+    }
+    
+    .step {
+      width: 30px;
+      height: 30px;
+      border-radius: 50%;
+      background-color: white;
+      border: 3px solid var(--cinza-claro);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 600;
+      color: var(--cinza);
+      position: relative;
+      z-index: 3;
+      transition: all 0.3s ease;
+    }
+    
+    .step.active {
+      border-color: var(--azul-medio);
+      color: var(--azul-medio);
+    }
+    
+    .step.completed {
+      border-color: var(--azul-medio);
+      background-color: var(--azul-medio);
+      color: white;
+    }
+    
+    .step-title {
+      text-align: center;
+      font-size: 1.5rem;
+      font-weight: 600;
+      color: var(--azul-escuro);
+      margin-bottom: 10px;
+    }
+    
+    .step-description {
+      text-align: center;
+      color: #666;
+      margin-bottom: 30px;
+    }
+    
+    .form-step {
+      display: none;
+      animation: fadeIn 0.5s forwards;
+    }
+    
+    .form-step.active {
+      display: block;
+    }
+    
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    
+    .form-group {
+      margin-bottom: 25px;
+    }
+    
+    .form-group label {
+      display: block;
+      margin-bottom: 8px;
+      font-weight: 500;
+      color: var(--azul-escuro);
+    }
+    
+    .form-group input,
+    .form-group select,
+    .form-group textarea {
+      width: 100%;
+      padding: 15px;
+      border: 1px solid #ddd;
+      border-radius: 8px;
+      font-size: 1rem;
+      transition: all 0.3s;
+    }
+    
+    .form-group input:focus,
+    .form-group select:focus,
+    .form-group textarea:focus {
+      border-color: var(--azul-medio);
+      outline: none;
+      box-shadow: 0 0 0 3px rgba(70, 111, 166, 0.2);
+    }
+    
+    .radio-group {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 12px;
+    }
+    
+    .radio-option {
+      display: flex;
+      align-items: center;
+      padding: 15px;
+      border: 1px solid #ddd;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: all 0.3s;
+      position: relative;
+    }
+    
+    .radio-option:hover {
+      background-color: rgba(142, 163, 191, 0.05);
+    }
+    
+    .radio-option.selected {
+      border-color: var(--azul-medio);
+      background-color: rgba(142, 163, 191, 0.1);
+    }
+    
+    .radio-option input {
+      margin-right: 12px;
+      cursor: pointer;
+    }
+    
+    .error-message {
+      color: #e74c3c;
+      font-size: 0.85rem;
+      margin-top: 5px;
+      display: none;
+    }
+    
+    .form-navigation {
+      display: flex;
+      justify-content: space-between;
+      margin-top: 40px;
+    }
+    
+    .btn {
+      padding: 15px 30px;
+      border-radius: 8px;
+      font-size: 1rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s;
+    }
+    
+    .btn-back {
+      background-color: white;
+      border: 1px solid #ddd;
+      color: #666;
+    }
+    
+    .btn-back:hover {
+      background-color: var(--cinza-claro);
+    }
+    
+    .btn-next {
+      background-color: var(--azul-medio);
+      border: none;
+      color: white;
+    }
+    
+    .btn-next:hover {
+      background-color: var(--azul-escuro);
+      transform: translateY(-2px);
+      box-shadow: var(--sombra);
+    }
+    
+    .btn-submit {
+      background-color: var(--azul-medio);
+      border: none;
+      color: white;
+      width: 100%;
+    }
+    
+    .btn-submit:hover {
+      background-color: var(--azul-escuro);
+      transform: translateY(-2px);
+      box-shadow: var(--sombra);
+    }
+    
+    .thank-you {
+      text-align: center;
+      padding: 40px 20px;
+    }
+    
+    .thank-you-icon {
+      font-size: 5rem;
+      color: var(--azul-medio);
+      margin-bottom: 20px;
+    }
+    
+    .thank-you-title {
+      font-size: 2rem;
+      color: var(--azul-escuro);
+      margin-bottom: 15px;
+    }
+    
+    .thank-you-message {
+      font-size: 1.1rem;
+      color: #666;
+      line-height: 1.6;
+      margin-bottom: 30px;
+    }
+    
+    .form-required {
+      color: #e74c3c;
+      margin-left: 3px;
+    }
+    
+    .has-error input,
+    .has-error select {
+      border-color: #e74c3c;
+    }
+    
+    .has-error .error-message {
+      display: block;
+    }
+    
+    /* Estilos para o input "Outro" */
+    .outro-input {
+      display: none;
+      margin-top: 12px;
+      grid-column: span 2;
+    }
+    
+    .outro-input.visible {
+      display: block;
+      animation: fadeIn 0.3s forwards;
+    }
+    
+    /* Melhorias no layout das etapas 2 e 3 */
+    .empresa-info {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 15px;
+    }
+    
+    .empresa-info .form-group:nth-child(1) {
+      grid-column: span 2;
+    }
+    
+    @media (max-width: 480px) {
+      .radio-group {
+        grid-template-columns: 1fr;
+      }
+      
+      .empresa-info {
+        grid-template-columns: 1fr;
+      }
+    }
+    
+    /* Ícones para as opções */
+    .radio-option i {
+      margin-right: 8px;
+      color: var(--azul-medio);
+      font-size: 1.2rem;
+    }
+    
+    .radio-option.selected i {
+      color: var(--azul-escuro);
+    }
+    
+    /* Badge de Recomendado */
+    .badge-recomendado {
+      position: absolute;
+      top: -10px;
+      right: -10px;
+      background-color: var(--azul-medio);
+      color: white;
+      font-size: 0.7rem;
+      padding: 3px 8px;
+      border-radius: 12px;
+      font-weight: 600;
+    }
+  </style>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" />
+</head>
+<body>
+  <header>
+    <button class="back-button" id="global-back">
+      <i class="fas fa-arrow-left"></i>
+    </button>
+    <h1 class="header-title">Agendar Demonstração</h1>
+  </header>
+  
+  <div class="form-container">
+    <div class="progress-container">
+      <div class="progress-bar">
+        <div class="progress-fill" id="progress-fill"></div>
+        <div class="step active" data-step="1">1</div>
+        <div class="step" data-step="2">2</div>
+        <div class="step" data-step="3">3</div>
+        <div class="step" data-step="4">4</div>
+        <div class="step" data-step="5">5</div>
+      </div>
+    </div>
+    
+    <form id="multi-step-form">
+      <!-- Etapa 1: Informações Básicas -->
+      <div class="form-step active" data-step="1">
+        <h2 class="step-title">Informações Básicas</h2>
+        <p class="step-description">Conte-nos um pouco sobre você</p>
+        
+        <div class="form-group">
+          <label for="nome">Nome completo <span class="form-required">*</span></label>
+          <input type="text" id="nome" name="nome" required>
+          <div class="error-message">Por favor, informe seu nome completo.</div>
+        </div>
+        
+        <div class="form-group">
+          <label for="email">E-mail corporativo <span class="form-required">*</span></label>
+          <input type="email" id="email" name="email" required>
+          <div class="error-message">Por favor, informe um e-mail válido.</div>
+        </div>
+        
+        <div class="form-group">
+          <label for="telefone">Telefone <span class="form-required">*</span></label>
+          <input type="tel" id="telefone" name="telefone" required placeholder="(xx) xxxxx-xxxx">
+          <div class="error-message">Por favor, informe um telefone válido.</div>
+        </div>
+        
+        <div class="form-navigation">
+          <div></div> <!-- Espaço vazio para manter o layout -->
+          <button type="button" class="btn btn-next" data-next="2">Continuar</button>
+        </div>
+      </div>
+      
+      <!-- Etapa 2: Sobre sua Empresa -->
+      <div class="form-step" data-step="2">
+        <h2 class="step-title">Sobre sua Empresa</h2>
+        <p class="step-description">Informações sobre o seu negócio</p>
+        
+        <div class="empresa-info">
+          <div class="form-group">
+            <label for="empresa">Nome da empresa <span class="form-required">*</span></label>
+            <input type="text" id="empresa" name="empresa" required>
+            <div class="error-message">Por favor, informe o nome da sua empresa.</div>
+          </div>
+          
+          <div class="form-group">
+            <label for="cargo">Seu cargo <span class="form-required">*</span></label>
+            <input type="text" id="cargo" name="cargo" required>
+            <div class="error-message">Por favor, informe seu cargo na empresa.</div>
+          </div>
+          
+          <div class="form-group">
+            <label for="funcionarios">Número de funcionários</label>
+            <select id="funcionarios" name="funcionarios">
+              <option value="">Selecione uma opção</option>
+              <option value="1-10">1-10 funcionários</option>
+              <option value="11-50">11-50 funcionários</option>
+              <option value="51-200">51-200 funcionários</option>
+              <option value="201-500">201-500 funcionários</option>
+              <option value="501+">Mais de 500 funcionários</option>
+            </select>
+          </div>
+          
+          <div class="form-group">
+            <label for="setor">Setor de atuação</label>
+            <select id="setor" name="setor">
+              <option value="">Selecione uma opção</option>
+              <option value="tecnologia">Tecnologia</option>
+              <option value="financa">Finanças e Seguros</option>
+              <option value="saude">Saúde</option>
+              <option value="varejo">Varejo</option>
+              <option value="educacao">Educação</option>
+              <option value="industria">Indústria</option>
+              <option value="outro">Outro</option>
+            </select>
+          </div>
+        </div>
+        
+        <div class="form-group" id="outro-setor-container" style="display: none;">
+          <label for="outro-setor">Qual setor? <span class="form-required">*</span></label>
+          <input type="text" id="outro-setor" name="outro-setor">
+          <div class="error-message">Por favor, informe o setor da sua empresa.</div>
+        </div>
+        
+        <div class="form-navigation">
+          <button type="button" class="btn btn-back" data-back="1">Voltar</button>
+          <button type="button" class="btn btn-next" data-next="3">Continuar</button>
+        </div>
+      </div>
+      
+      <!-- Etapa 3: Necessidades da Empresa -->
+      <div class="form-step" data-step="3">
+        <h2 class="step-title">Necessidades da Empresa</h2>
+        <p class="step-description">Como podemos ajudar você</p>
+        
+        <div class="form-group">
+          <label>Qual área você busca otimizar com ciência de dados? <span class="form-required">*</span></label>
+          <div class="radio-group" id="areas-interesse">
+            <label class="radio-option">
+              <input type="radio" name="area-interesse" value="vendas-marketing"> 
+              <i class="fas fa-chart-line"></i> Vendas e Marketing
+            </label>
+            <label class="radio-option">
+              <input type="radio" name="area-interesse" value="operacoes"> 
+              <i class="fas fa-truck"></i> Operações e Logística
+            </label>
+            <label class="radio-option">
+              <input type="radio" name="area-interesse" value="financeiro"> 
+              <i class="fas fa-dollar-sign"></i> Financeiro e Custos
+            </label>
+            <label class="radio-option">
+              <input type="radio" name="area-interesse" value="rh"> 
+              <i class="fas fa-users"></i> Recursos Humanos
+            </label>
+            <label class="radio-option">
+              <input type="radio" name="area-interesse" value="produto"> 
+              <i class="fas fa-lightbulb"></i> Desenvolvimento de Produto
+              <span class="badge-recomendado">Popular</span>
+            </label>
+            <label class="radio-option" id="area-outro">
+              <input type="radio" name="area-interesse" value="outro"> 
+              <i class="fas fa-plus-circle"></i> Outro
+            </label>
+          </div>
+          <div class="outro-input" id="outro-area-container">
+            <input type="text" id="outro-area" name="outro-area" placeholder="Especifique a área de interesse">
+          </div>
+          <div class="error-message">Por favor, selecione uma opção.</div>
+        </div>
+        
+        <div class="form-navigation">
+          <button type="button" class="btn btn-back" data-back="2">Voltar</button>
+          <button type="button" class="btn btn-next" data-next="4">Continuar</button>
+        </div>
+      </div>
+      
+      <!-- Etapa 4: Objetivos -->
+      <div class="form-step" data-step="4">
+        <h2 class="step-title">Seus Objetivos</h2>
+        <p class="step-description">O que você espera alcançar com nossos serviços</p>
+        
+        <div class="form-group">
+          <label>O que você busca com a implementação de ciência de dados? <span class="form-required">*</span></label>
+          <div class="radio-group" id="objetivos">
+            <label class="radio-option">
+              <input type="radio" name="objetivo" value="decisoes"> 
+              <i class="fas fa-brain"></i> Tornar decisões mais precisas
+            </label>
+            <label class="radio-option">
+              <input type="radio" name="objetivo" value="custos"> 
+              <i class="fas fa-hand-holding-usd"></i> Reduzir custos operacionais
+            </label>
+            <label class="radio-option">
+              <input type="radio" name="objetivo" value="crescimento"> 
+              <i class="fas fa-chart-bar"></i> Impulsionar crescimento de receita
+              <span class="badge-recomendado">Popular</span>
+            </label>
+            <label class="radio-option">
+              <input type="radio" name="objetivo" value="inovacao"> 
+              <i class="fas fa-rocket"></i> Desenvolver inovação e novos produtos
+            </label>
+            <label class="radio-option">
+              <input type="radio" name="objetivo" value="eficiencia"> 
+              <i class="fas fa-tachometer-alt"></i> Melhorar eficiência dos processos
+            </label>
+            <label class="radio-option" id="objetivo-outro">
+              <input type="radio" name="objetivo" value="outro"> 
+              <i class="fas fa-plus-circle"></i> Outro
+            </label>
+          </div>
+          <div class="outro-input" id="outro-objetivo-container">
+            <input type="text" id="outro-objetivo" name="outro-objetivo" placeholder="Especifique seu objetivo">
+          </div>
+          <div class="error-message">Por favor, selecione uma opção.</div>
+        </div>
+        
+        <div class="form-navigation">
+          <button type="button" class="btn btn-back" data-back="3">Voltar</button>
+          <button type="button" class="btn btn-next" data-next="5">Continuar</button>
+        </div>
+      </div>
+      
+      <!-- Etapa 5: Finalização -->
+      <div class="form-step" data-step="5">
+        <h2 class="step-title">Quase lá!</h2>
+        <p class="step-description">Alguma informação adicional para tornar a demo mais relevante?</p>
+        
+        <div class="form-group">
+          <label for="urgencia">Qual a urgência para iniciar o projeto?</label>
+          <select id="urgencia" name="urgencia">
+            <option value="">Selecione uma opção</option>
+            <option value="imediato">Imediatamente</option>
+            <option value="1mes">Em até 1 mês</option>
+            <option value="3meses">Em até 3 meses</option>
+            <option value="6meses">Em até 6 meses</option>
+            <option value="futuro">Apenas explorando opções</option>
+          </select>
+        </div>
+        
+        <div class="form-group">
+          <label for="mensagem">Alguma informação adicional que devemos saber?</label>
+          <textarea id="mensagem" name="mensagem" rows="4" placeholder="Descreva brevemente suas necessidades específicas, desafios ou expectativas..."></textarea>
+        </div>
+        
+        <div class="form-navigation">
+          <button type="button" class="btn btn-back" data-back="4">Voltar</button>
+          <button type="button" class="btn btn-submit" id="submit-form">Agendar Demonstração</button>
+        </div>
+      </div>
+      
+      <!-- Tela de Agradecimento -->
+      <div class="form-step" data-step="thank-you">
+        <div class="thank-you">
+          <div class="thank-you-icon">
+            <i class="fas fa-check-circle"></i>
+          </div>
+          <h2 class="thank-you-title">Agendamento Enviado!</h2>
+          <p class="thank-you-message">
+            Obrigado pelo seu interesse! Entraremos em contato em até <strong>24 horas</strong> para confirmar uma data para sua demonstração personalizada.
+          </p>
+          <button type="button" class="btn btn-submit" id="return-home">Voltar para o início</button>
+        </div>
+      </div>
+    </form>
+  </div>
+  
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+  // Elementos
+  const form = document.getElementById('multi-step-form');
+  const steps = document.querySelectorAll('.form-step');
+  const progressSteps = document.querySelectorAll('.step');
+  const progressFill = document.getElementById('progress-fill');
+  const nextButtons = document.querySelectorAll('.btn-next');
+  const backButtons = document.querySelectorAll('.btn-back');
+  const submitButton = document.getElementById('submit-form');
+  const globalBackButton = document.getElementById('global-back');
+  const returnHomeButton = document.getElementById('return-home');
+  
+  // Elementos para campos "Outro"
+  const setorSelect = document.getElementById('setor');
+  const outroSetorContainer = document.getElementById('outro-setor-container');
+  const outroSetor = document.getElementById('outro-setor');
+  
+  const areaOutro = document.getElementById('area-outro');
+  const outroAreaContainer = document.getElementById('outro-area-container');
+  const outroArea = document.getElementById('outro-area');
+  
+  const objetivoOutro = document.getElementById('objetivo-outro');
+  const outroObjetivoContainer = document.getElementById('outro-objetivo-container');
+  const outroObjetivo = document.getElementById('outro-objetivo');
+  
+  // Variável para controlar o passo atual
+  let currentStep = 1;
+  const totalSteps = 5;
+  
+  // SOLUÇÃO 1: Corrigir o caminho para a página matriz
+  // Caminho absoluto para a página inicial
+  const homePagePath = 'C:/Users/Lawalash/Documents/GitHub/ProjetosA2Data/Interno/LadingPage/index.html';
+  
+  // Configurar o botão voltar global para retornar à página matriz
+  globalBackButton.addEventListener('click', function() {
+    window.location.href = homePagePath;
+  });
+  
+  // Configurar o botão "Voltar para o início" para retornar à página matriz
+  returnHomeButton.addEventListener('click', function() {
+    window.location.href = homePagePath;
+  });
+  
+  // Máscara para o campo de telefone
+  const telefoneInput = document.getElementById('telefone');
+  telefoneInput.addEventListener('input', function(e) {
+    let value = e.target.value.replace(/\D/g, '');
+    
+    if (value.length <= 11) {
+      if (value.length > 2) {
+        value = `(${value.substring(0, 2)}) ${value.substring(2)}`;
+      }
+      if (value.length > 10) {
+        value = `${value.substring(0, 9)}-${value.substring(9)}`;
+      }
+    }
+    
+    e.target.value = value;
+  });
+  
+  // Mostrar/esconder campo "Outro Setor"
+  setorSelect.addEventListener('change', function() {
+    if (this.value === 'outro') {
+      outroSetorContainer.style.display = 'block';
+      outroSetor.required = true;
+    } else {
+      outroSetorContainer.style.display = 'none';
+      outroSetor.required = false;
+    }
+  });
+  
+  // Atualizar a barra de progresso
+  function updateProgress() {
+    const progressPercentage = ((currentStep - 1) / (totalSteps - 1)) * 100;
+    progressFill.style.width = `${progressPercentage}%`;
+    
+    progressSteps.forEach(step => {
+      const stepNumber = parseInt(step.getAttribute('data-step'));
+      
+      step.classList.remove('active', 'completed');
+      
+      if (stepNumber < currentStep) {
+        step.classList.add('completed');
+      } else if (stepNumber === currentStep) {
+        step.classList.add('active');
+      }
+    });
+  }
+  
+  // Mostrar um passo específico
+  function showStep(stepNumber) {
+    steps.forEach(step => {
+      step.classList.remove('active');
+    });
+    
+    const targetStep = document.querySelector(`.form-step[data-step="${stepNumber}"]`);
+    if (targetStep) {
+      targetStep.classList.add('active');
+    }
+    
+    // Atualizar o título no cabeçalho
+    const headerTitle = document.querySelector('.header-title');
+    if (stepNumber === 'thank-you') {
+      headerTitle.textContent = 'Agendamento Confirmado';
+      globalBackButton.style.display = 'none';
+    } else {
+      headerTitle.textContent = 'Agendar Demonstração';
+      globalBackButton.style.display = 'flex';
+    }
+    
+    currentStep = stepNumber !== 'thank-you' ? parseInt(stepNumber) : totalSteps + 1;
+    updateProgress();
+  }
+  
+  // Validar o formulário para o passo atual
+  function validateStep(stepNumber) {
+    const currentStepElement = document.querySelector(`.form-step[data-step="${stepNumber}"]`);
+    let isValid = true;
+    
+    // Validação para o passo 1
+    if (stepNumber === 1) {
+      const nome = document.getElementById('nome');
+      const email = document.getElementById('email');
+      const telefone = document.getElementById('telefone');
+      
+      // Validar nome
+      if (!nome.value.trim()) {
+        toggleError(nome, true);
+        isValid = false;
+      } else {
+        toggleError(nome, false);
+      }
+      
+      // Validar email
+      const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+      if (!email.value.trim() || !emailPattern.test(email.value)) {
+        toggleError(email, true);
+        isValid = false;
+      } else {
+        toggleError(email, false);
+      }
+      
+  
+        // Validar telefone
+    const telPattern = /^\(\d{2}\)\s?\d{4,5}-?\d{4}$/;
+    if (!telefone.value.trim() || telefone.value.replace(/\D/g, '').length < 10) {
+    toggleError(telefone, true);
+    isValid = false;
+    } else {
+    toggleError(telefone, false);
+    }
+    }
+    
+    // Validação para o passo 2
+    else if (stepNumber === 2) {
+      const empresa = document.getElementById('empresa');
+      const cargo = document.getElementById('cargo');
+      
+      // Validar empresa
+      if (!empresa.value.trim()) {
+        toggleError(empresa, true);
+        isValid = false;
+      } else {
+        toggleError(empresa, false);
+      }
+      
+      // Validar cargo
+      if (!cargo.value.trim()) {
+        toggleError(cargo, true);
+        isValid = false;
+      } else {
+        toggleError(cargo, false);
+      }
+      
+      // Validar outro setor se necessário
+      if (setorSelect.value === 'outro' && !outroSetor.value.trim()) {
+        toggleError(outroSetor, true);
+        isValid = false;
+      } else if (setorSelect.value === 'outro') {
+        toggleError(outroSetor, false);
+      }
+    }
+    
+    // Validação para o passo 3
+    else if (stepNumber === 3) {
+      const areaInteresse = currentStepElement.querySelector('input[name="area-interesse"]:checked');
+      
+      if (!areaInteresse) {
+        currentStepElement.querySelector('.error-message').style.display = 'block';
+        isValid = false;
+      } else {
+        currentStepElement.querySelector('.error-message').style.display = 'none';
+        
+        // Validar o campo "Outro" se necessário
+        if (areaInteresse.value === 'outro' && !outroArea.value.trim()) {
+          outroArea.classList.add('error');
+          isValid = false;
+        } else if (areaInteresse.value === 'outro') {
+          outroArea.classList.remove('error');
+        }
+      }
+    }
+    
+    // Validação para o passo 4
+    else if (stepNumber === 4) {
+      const objetivo = currentStepElement.querySelector('input[name="objetivo"]:checked');
+      
+      if (!objetivo) {
+        currentStepElement.querySelector('.error-message').style.display = 'block';
+        isValid = false;
+      } else {
+        currentStepElement.querySelector('.error-message').style.display = 'none';
+        
+        // Validar o campo "Outro" se necessário
+        if (objetivo.value === 'outro' && !outroObjetivo.value.trim()) {
+          outroObjetivo.classList.add('error');
+          isValid = false;
+        } else if (objetivo.value === 'outro') {
+          outroObjetivo.classList.remove('error');
+        }
+      }
+    }
+    
+    return isValid;
+  }
+  
+  // Manipular erro nos campos
+  function toggleError(inputElement, show) {
+    const formGroup = inputElement.closest('.form-group');
+    
+    if (show) {
+      formGroup.classList.add('has-error');
+      formGroup.querySelector('.error-message').style.display = 'block';
+    } else {
+      formGroup.classList.remove('has-error');
+      formGroup.querySelector('.error-message').style.display = 'none';
+    }
+  }
+  
+  // Manipular evento de clique nos botões "Próximo"
+  nextButtons.forEach(button => {
+    button.addEventListener('click', function() {
+      const currentStepNumber = parseInt(this.getAttribute('data-next')) - 1;
+      const nextStepNumber = parseInt(this.getAttribute('data-next'));
+      
+      if (validateStep(currentStepNumber)) {
+        showStep(nextStepNumber);
+      }
+    });
+  });
+  
+  // Manipular evento de clique nos botões "Voltar"
+  backButtons.forEach(button => {
+    button.addEventListener('click', function() {
+      const prevStepNumber = parseInt(this.getAttribute('data-back'));
+      showStep(prevStepNumber);
+    });
+  });
+  
+  // Tratamento dos campos "Outro"
+  // Para área de interesse
+  const radioOptionsArea = document.querySelectorAll('input[name="area-interesse"]');
+  radioOptionsArea.forEach(option => {
+    option.addEventListener('change', function() {
+      const radioOption = this.closest('.radio-option');
+      
+      // Remover seleção de todos os itens
+      document.querySelectorAll('#areas-interesse .radio-option').forEach(item => {
+        item.classList.remove('selected');
+      });
+      
+      // Adicionar seleção ao item atual
+      radioOption.classList.add('selected');
+      
+      // Mostrar/esconder campo "Outro"
+      if (this.value === 'outro') {
+        outroAreaContainer.classList.add('visible');
+        outroArea.required = true;
+      } else {
+        outroAreaContainer.classList.remove('visible');
+        outroArea.required = false;
+      }
+    });
+  });
+  
+  // Para objetivo
+  const radioOptionsObjetivo = document.querySelectorAll('input[name="objetivo"]');
+  radioOptionsObjetivo.forEach(option => {
+    option.addEventListener('change', function() {
+      const radioOption = this.closest('.radio-option');
+      
+      // Remover seleção de todos os itens
+      document.querySelectorAll('#objetivos .radio-option').forEach(item => {
+        item.classList.remove('selected');
+      });
+      
+      // Adicionar seleção ao item atual
+      radioOption.classList.add('selected');
+      
+      // Mostrar/esconder campo "Outro"
+      if (this.value === 'outro') {
+        outroObjetivoContainer.classList.add('visible');
+        outroObjetivo.required = true;
+      } else {
+        outroObjetivoContainer.classList.remove('visible');
+        outroObjetivo.required = false;
+      }
+    });
+  });
+  
+  // SOLUÇÃO 2: Enviar para WhatsApp após submissão do formulário
+  submitButton.addEventListener('click', function(e) {
+    e.preventDefault();
+    
+    if (validateStep(currentStep)) {
+      // Coletar todos os dados do formulário
+      const formData = {
+        nome: document.getElementById('nome').value,
+        email: document.getElementById('email').value,
+        telefone: document.getElementById('telefone').value,
+        empresa: document.getElementById('empresa').value,
+        cargo: document.getElementById('cargo').value,
+        funcionarios: document.getElementById('funcionarios').value || "Não informado",
+        setor: setorSelect.value === 'outro' ? outroSetor.value : setorSelect.value || "Não informado",
+        area: (() => {
+          const areaChecked = document.querySelector('input[name="area-interesse"]:checked');
+          if (areaChecked) {
+            return areaChecked.value === 'outro' ? outroArea.value : getAreaTexto(areaChecked.value);
+          }
+          return "Não informado";
+        })(),
+        objetivo: (() => {
+          const objetivoChecked = document.querySelector('input[name="objetivo"]:checked');
+          if (objetivoChecked) {
+            return objetivoChecked.value === 'outro' ? outroObjetivo.value : getObjetivoTexto(objetivoChecked.value);
+          }
+          return "Não informado";
+        })(),
+        urgencia: document.getElementById('urgencia').value || "Não informado",
+        mensagem: document.getElementById('mensagem').value || "Nenhuma informação adicional"
+      };
+      
+      // Função para obter texto da área selecionada
+      function getAreaTexto(value) {
+        const areas = {
+          'vendas-marketing': 'Vendas e Marketing',
+          'operacoes': 'Operações e Logística',
+          'financeiro': 'Financeiro e Custos',
+          'rh': 'Recursos Humanos',
+          'produto': 'Desenvolvimento de Produto'
+        };
+        return areas[value] || value;
+      }
+      
+      // Função para obter texto do objetivo selecionado
+      function getObjetivoTexto(value) {
+        const objetivos = {
+          'decisoes': 'Tornar decisões mais precisas',
+          'custos': 'Reduzir custos operacionais',
+          'crescimento': 'Impulsionar crescimento de receita',
+          'inovacao': 'Desenvolver inovação e novos produtos',
+          'eficiencia': 'Melhorar eficiência dos processos'
+        };
+        return objetivos[value] || value;
+      }
+      
+      // Construir a mensagem para o WhatsApp
+      const mensagemWhatsApp = 
+        `*Nova solicitação de agendamento - A2 Data Consultoria*%0A%0A` +
+        `*Nome:* ${formData.nome}%0A` +
+        `*Email:* ${formData.email}%0A` +
+        `*Telefone:* ${formData.telefone}%0A` +
+        `*Empresa:* ${formData.empresa}%0A` +
+        `*Cargo:* ${formData.cargo}%0A` +
+        `*Nº Funcionários:* ${formData.funcionarios}%0A` +
+        `*Setor:* ${formData.setor}%0A` +
+        `*Área de interesse:* ${formData.area}%0A` +
+        `*Objetivo:* ${formData.objetivo}%0A` +
+        `*Urgência:* ${formData.urgencia}%0A` +
+        `*Mensagem adicional:* ${formData.mensagem}`;
+      
+      // Número do WhatsApp para enviar a mensagem
+      const numeroWhatsApp = "5583989060130"; // Formato: códigopaís+ddd+numero (sem espaços ou caracteres especiais)
+      
+      // Criar o link do WhatsApp
+      const whatsappLink = `https://wa.me/${numeroWhatsApp}?text=${mensagemWhatsApp}`;
+      
+      // Mostrar a tela de agradecimento
+      showStep('thank-you');
+      
+      // Abrir o WhatsApp em uma nova janela
+      window.open(whatsappLink, '_blank');
+    }
+  });
+  
+  // Iniciar o formulário no passo 1
+  showStep(1);
+});
+</script>
