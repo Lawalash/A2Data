@@ -1,12 +1,30 @@
-// Função para scroll suave até os planos
-function scrollToPlanos() {
-  document.getElementById('planos').scrollIntoView({
-    behavior: 'smooth'
-  });
-}
-
-// Função para scroll suave até as diferentes seções
+// Ajustando os links dos botões de planos para WhatsApp e formulário
 document.addEventListener('DOMContentLoaded', function() {
+  // Ajuste para os botões "Assinar Agora" nos planos
+  const botoesAssinar = document.querySelectorAll('.botao-contratar');
+  botoesAssinar.forEach(botao => {
+    botao.addEventListener('click', function() {
+      // Link do WhatsApp com número especificado
+      window.open('https://wa.me/5583989060130', '_blank');
+    });
+  });
+  
+  // Ajuste para o botão "Fale Conosco" no plano personalizado
+  const botaoContato = document.querySelector('.botao-contato');
+  if (botaoContato) {
+    botaoContato.addEventListener('click', function() {
+      // Caminho relativo para o formulário de agendamento
+      window.location.href = '/demo/agendardemo.html';
+    });
+  }
+  
+  // Função original para scroll suave até os planos
+  window.scrollToPlanos = function() {
+    document.getElementById('planos').scrollIntoView({
+      behavior: 'smooth'
+    });
+  }
+
   // Configurar links de navegação
   const navLinks = document.querySelectorAll('.nav-links a');
   
