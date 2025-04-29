@@ -1,21 +1,12 @@
-// Script principal integrado com sidebar mobile simplificado e outras funcionalidades
-
 document.addEventListener('DOMContentLoaded', function() {
-  // Elementos básicos
-  const menuToggle       = document.querySelector('.menu-toggle');
-  const navLinks         = document.querySelector('.nav-links');
-  const sidebarOverlay   = document.querySelector('.sidebar-overlay');
-  const body             = document.body;
-
   // 1) Botões "Assinar Agora" (WhatsApp)
-  const botoesAssinar = document.querySelectorAll('.botao-contratar');
-  botoesAssinar.forEach(botao => {
-    botao.addEventListener('click', () => {
+  document.querySelectorAll('.botao-contratar').forEach(btn => {
+    btn.addEventListener('click', () => {
       window.open('https://wa.me/5583989060130', '_blank');
     });
   });
 
-  // 2) Botão "Fale Conosco" (plano personalizado)
+  // 2) Botão "Fale Conosco"
   const botaoContato = document.querySelector('.botao-contato');
   if (botaoContato) {
     botaoContato.addEventListener('click', () => {
@@ -23,110 +14,94 @@ document.addEventListener('DOMContentLoaded', function() {
     });
   }
 
-  // 3) Scroll suave para a seção "Planos"
+  // 3) Scroll suave para #planos
   window.scrollToPlanos = () => {
     const el = document.getElementById('planos');
     if (el) el.scrollIntoView({ behavior: 'smooth' });
   };
 
-  // Função única para abrir/fechar o menu mobile
-  function toggleMenu() {
-    navLinks.classList.toggle('active');
-    sidebarOverlay.classList.toggle('active');
+  // === Header / Sidebar Mobile Logic ===
+  const hamburgerBtn = document.getElementById('hamburger-btn');
+  const closeBtn     = document.getElementById('close-btn');
+  const sidebar      = document.getElementById('sidebar');
+  const overlay      = document.getElementById('sidebar-overlay');
 
-    // Prevenir/restaurar scroll no body
-    if (navLinks.classList.contains('active')) {
-      body.style.overflow = 'hidden';
+  // Alterna o estado do sidebar ao clicar no botão hamburguer
+  hamburgerBtn.addEventListener('click', function() {
+    if (sidebar.classList.contains('active')) {
+      closeSidebar();
     } else {
-      body.style.overflow = '';
+      openSidebar();
     }
+  });
 
-    // Alternar ícone do menu (FontAwesome)
-    const icon = menuToggle.querySelector('i');
-    if (icon) {
-      icon.className = navLinks.classList.contains('active')
-        ? 'fas fa-times'
-        : 'fas fa-bars';
-    }
+  // Fechar sidebar (botão de fechar)
+  closeBtn.addEventListener('click', function() {
+    closeSidebar();
+  });
+
+  // Fechar sidebar (clicando no overlay)
+  overlay.addEventListener('click', function() {
+    closeSidebar();
+  });
+
+  // Fechar sidebar (clicando em links)
+  document.querySelectorAll('.sidebar-links a').forEach(link => {
+    link.addEventListener('click', function() {
+      closeSidebar();
+    });
+  });
+
+  function openSidebar() {
+    sidebar.classList.add('active');
+    overlay.classList.add('active');
+    document.body.style.overflow = 'hidden';
   }
 
-  // 4) Evento para o botão de menu (click e acessibilidade)
-  menuToggle.addEventListener('click', toggleMenu);
-  menuToggle.addEventListener('keydown', function(e) {
-    if (e.key === 'Enter' || e.key === ' ') {
-      e.preventDefault();
-      toggleMenu();
-    }
-  });
+  function closeSidebar() {
+    sidebar.classList.remove('active');
+    overlay.classList.remove('active');
+    document.body.style.overflow = '';
+  }
 
-  // 5) Fechar menu ao clicar no overlay
-  sidebarOverlay.addEventListener('click', toggleMenu);
-
-  // 6) Fechar menu ao clicar em um link + scroll suave
-  document.querySelectorAll('.nav-links a').forEach(link => {
-    link.addEventListener('click', function(e) {
-      e.preventDefault();
-      const targetId = this.getAttribute('href').substring(1);
-      toggleMenu();
-      setTimeout(() => {
-        const destino = document.getElementById(targetId) || document.querySelector(`.${targetId}`);
-        if (destino) destino.scrollIntoView({ behavior: 'smooth' });
-      }, 300);
-    });
-  });
-
-  // 7) Fechar menu ao redimensionar para desktop
-  window.addEventListener('resize', function() {
-    if (window.innerWidth > 768 && navLinks.classList.contains('active')) {
-      toggleMenu();
-    }
-  });
-
-  // 8) Detectar toques fora do menu para fechá-lo
-  document.addEventListener('touchstart', function(e) {
-    if (
-      navLinks.classList.contains('active') &&
-      !navLinks.contains(e.target) &&
-      !menuToggle.contains(e.target)
-    ) {
-      toggleMenu();
-    }
-  });
-
-  // 9) Animações dos cards de sócios
-  document.querySelectorAll('.socio-card').forEach(card => {
-    const icons = card.querySelector('.icones-animados');
-    card.addEventListener('mouseenter', () => {
-      if (icons) icons.style.animationPlayState = 'running';
-    });
-    card.addEventListener('mouseleave', () => {
-      if (icons) icons.style.animationPlayState = 'paused';
-    });
-  });
-
-  // 10) Configuração do particles.js para o fundo animado
+  // 4) particles.js
   const particlesContainer = document.getElementById('particles-js');
-  if (particlesContainer) {
-    if (typeof particlesJS !== 'undefined') {
-      particlesJS('particles-js', {
-        particles: {
-          number:        { value: 80, density: { enable: true, value_area: 800 } },
-          color:         { value: '#ffffff' },
-          opacity:       { value: 0.5 },
-          size:          { value: 3, random: true },
-          line_linked:   { enable: true, distance: 150, color: '#ffffff', opacity: 0.4, width: 1 },
-          move:          { enable: true, speed: 2, direction: 'none', out_mode: 'out' }
-        },
-        interactivity: {
-          detect_on: 'canvas',
-          events: {
-            onhover: { enable: true, mode: 'repulse' },
-            onclick: { enable: true, mode: 'push' }
-          }
+  if (particlesContainer && typeof particlesJS !== 'undefined') {
+    particlesJS('particles-js', {
+      particles: {
+        number:      { value: 80, density: { enable: true, value_area: 800 } },
+        color:       { value: '#ffffff' },
+        opacity:     { value: 0.5 },
+        size:        { value: 3, random: true },
+        line_linked: { enable: true, distance: 150, color: '#ffffff', opacity: 0.4, width: 1 },
+        move:        { enable: true, speed: 2, direction: 'none', out_mode: 'out' }
+      },
+      interactivity: {
+        detect_on: 'canvas',
+        events: {
+          onhover: { enable: true, mode: 'repulse' },
+          onclick: { enable: true, mode: 'push' }
         }
-      });
-    } else {
-      console.warn('particles.js não está carregado');
-    }
+      }
+    });
   }
+});
+
+
+// Botão de voltar ao topo
+const backToTopButton = document.getElementById('back-to-top');
+  
+window.addEventListener('scroll', () => {
+  if (window.pageYOffset > 300) {
+    backToTopButton.classList.add('show');
+  } else {
+    backToTopButton.classList.remove('show');
+  }
+});
+
+backToTopButton.addEventListener('click', () => {
+  window.scrollTo({
+    top: 0,
+    behavior: 'smooth'
+  });
 });

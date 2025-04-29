@@ -8,27 +8,35 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" />
 </head>
 <body>
-  <!-- Etapa 1 - Tela Inicial -->
-  <header>
-    <nav class="navbar">
-      <div class="logo">
-        <span class="logo-text">A2 DATA</span>
-        <span class="logo-highlight"></span>
-      </div>
-      <div class="menu-toggle" aria-label="Abrir menu" role="button" tabindex="0">
-        <i class="fas fa-bars"></i>
-      </div>
-      <div class="nav-links">
-        <a href="#sobre">Sobre nós</a>
-        <a href="#servicos">Serviços</a>
-        <a href="#planos">Planos</a>
-        <a href="#contato">Contato</a>
-      </div>
-    </nav>
-  </header>
+  <!-- Header e Navegação -->
+<header class="header">
+  <div class="logo">A2data</div>
+  <nav>
+    <ul class="nav-links">
+      <li><a href="#inicio">Início</a></li>
+      <li><a href="#sobre">Sobre</a></li>
+      <li><a href="#servicos">Serviços</a></li>
+      <li><a href="#contato">Contato</a></li>
+    </ul>
+  </nav>
+  <button class="hamburger" id="hamburger-btn">☰</button>
+</header>
 
-  <!-- Overlay para fechar o sidebar -->
-  <div class="sidebar-overlay"></div>
+
+<!-- Sidebar para navegação mobile -->
+<div class="sidebar" id="sidebar">
+  <button class="close-btn" id="close-btn">✕</button>
+  <ul class="sidebar-links">
+    <li><a href="#inicio">Início</a></li>
+    <li><a href="#sobre">Sobre</a></li>
+    <li><a href="#servicos">Serviços</a></li>
+    <li><a href="#contato">Contato</a></li>
+  </ul>
+</div>
+
+<!-- Overlay para quando o sidebar estiver aberto -->
+<div class="sidebar-overlay" id="sidebar-overlay"></div>
+  
 
 <section class="hero">
   <div class="particles-container" id="particles-js"></div>
@@ -85,7 +93,7 @@
     <!-- Yan - Especialista em Dados -->
     <div class="socio-card">
         <div class="socio-img-container">
-            <img src="/imagens/Yan.JPG" alt="Yan" class="socio-img" />
+            <img src="./imagens/Yan.jpg" alt="Yan" class="socio-img" />
         </div>
         <div class="socio-overlay yan-overlay">
             <div class="overlay-content">
@@ -369,7 +377,7 @@
           <li><i class="fas fa-check-circle"></i> Atendimento dedicado</li>
         </ul>
         
-        <button class="botao-contato">Fale Conosco</button>
+        <a href="demo/agendardemo.html"><button class="botao-contato">Fale Conosco</button></a>
       </div>
     </div>
     
@@ -380,46 +388,129 @@
   </div>
 </section>
 
-   <!-- Footer Moderno -->
-   <footer class="footer">
-    <div class="footer-container">
-      <!-- Coluna 1 - Sobre -->
-      <div class="footer-col">
-        <h4>A2 DATA</h4>
-        <p>Transformamos dados em estratégias inteligentes para o seu negócio.</p>
-        <div class="footer-contato">
-          <p><i class="fas fa-map-marker-alt"></i> Rua São João, Campina Grande/PB</p>
-          <p><i class="fas fa-phone"></i>(83) 98906-0130</p>
-          <p><i class="fas fa-envelope"></i> contato@a2data.com.br</p>
+   <!-- Footer Moderno e Responsivo -->
+<footer class="footer">
+  <!-- Ondas decorativas na parte superior -->
+  <div class="footer-waves">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 100" preserveAspectRatio="none">
+      <path fill="#f8fcff" d="M0,64L60,69.3C120,75,240,85,360,80C480,75,600,53,720,48C840,43,960,53,1080,56.7C1200,59,1320,53,1380,50.7L1440,48L1440,0L1380,0C1320,0,1200,0,1080,0C960,0,840,0,720,0C600,0,480,0,360,0C240,0,120,0,60,0L0,0Z"></path>
+    </svg>
+  </div>
+
+  <div class="footer-container">
+    <!-- Logo e Informações Principais -->
+    <div class="footer-col footer-brand">
+      <div class="footer-logo">
+        <h3>A2 DATA</h3>
+        <span class="footer-tagline">Data Intelligence</span>
+      </div>
+      <p class="footer-desc">Transformamos dados em estratégias inteligentes para impulsionar o crescimento do seu negócio.</p>
+      
+      <div class="footer-cta">
+        <a href="#contato" class="footer-button">
+          <span>Fale Conosco</span>
+          <i class="fas fa-arrow-right"></i>
+        </a>
+      </div>
+    </div>
+
+    <!-- Links e Navegação -->
+    <div class="footer-col footer-links">
+      <h4>Links Rápidos</h4>
+      <ul>
+        <li><a href="#servicos"><i class="fas fa-chart-line"></i> Serviços</a></li>
+        <li><a href="#planos"><i class="fas fa-tags"></i> Planos</a></li>
+        <li><a href="#sobre"><i class="fas fa-users"></i> Sobre Nós</a></li>
+        <li><a href="#cases"><i class="fas fa-briefcase"></i> Cases</a></li>
+      </ul>
+    </div>
+
+    <!-- Serviços -->
+    <div class="footer-col footer-services">
+      <h4>Soluções</h4>
+      <ul>
+        <li><a href="#bi">Business Intelligence</a></li>
+        <li><a href="#analytics">Data Analytics</a></li>
+        <li><a href="#automacao">Automação de Processos</a></li>
+        <li><a href="#consultoria">Consultoria Estratégica</a></li>
+      </ul>
+    </div>
+
+    <!-- Contato e Social -->
+    <div class="footer-col footer-contact">
+      <h4>Contato</h4>
+      <div class="contact-info">
+        <div class="contact-item">
+          <i class="fas fa-map-marker-alt"></i>
+          <p>Rua São João, <br>Campina Grande/PB</p>
+        </div>
+        <div class="contact-item">
+          <i class="fas fa-phone-alt"></i>
+          <p>(83) 98906-0130</p>
+        </div>
+        <div class="contact-item">
+          <i class="fas fa-envelope"></i>
+          <p>contato@a2data.com.br</p>
         </div>
       </div>
+    </div>
+  </div>
 
-      <!-- Coluna 2 - Links Rápidos -->
-      <div class="footer-col">
-        <h4>Links Rápidos</h4>
-        <ul>
-          <li><a href="#planos">Planos</a></li>
-          <li><a href="#">Sobre Nós</a></li>
-          <li><a href="#">Política de Privacidade</a></li>
-        </ul>
-      </div>
-
-      <!-- Coluna 3 - Redes Sociais -->
-      <div class="footer-col">
-        <h4>Nos acompanhe</h4>
+  <!-- Social e Newsletter -->
+  <div class="footer-social-container">
+    <div class="footer-social-content">
+      <div class="social-column">
+        <h4>Acompanhe nossas redes</h4>
         <div class="social-links">
-          <a href="#"><i class="fab fa-linkedin"></i></a>
-          <a href="#"><i class="fab fa-instagram"></i></a>
-          <a href="#"><i class="fab fa-facebook"></i></a>
+          <a href="#" aria-label="LinkedIn" class="social-link linkedin">
+            <i class="fab fa-linkedin-in"></i>
+          </a>
+          <a href="#" aria-label="Instagram" class="social-link instagram">
+            <i class="fab fa-instagram"></i>
+          </a>
+          <a href="#" aria-label="Facebook" class="social-link facebook">
+            <i class="fab fa-facebook-f"></i>
+          </a>
+          <a href="#" aria-label="Twitter" class="social-link twitter">
+            <i class="fab fa-twitter"></i>
+          </a>
         </div>
       </div>
+      
+      <div class="newsletter-column">
+        <h4>Novidades e Atualizações</h4>
+        <p>Receba nossas dicas, casos de sucesso e novidades.</p>
+        <form class="footer-form">
+          <div class="form-group">
+            <input type="email" placeholder="Seu e-mail" required>
+            <button type="submit">
+              <i class="fas fa-paper-plane"></i>
+            </button>
+          </div>
+        </form>
+      </div>
     </div>
+  </div>
+  
+  <!-- Copyright -->
+  <div class="footer-bottom">
+    <div class="footer-bottom-container">
+      <div class="copyright">
+        <p>&copy; 2025 A2 Data Consultoria. Todos os direitos reservados.</p>
+      </div>
+      <div class="footer-bottom-links">
+        <a href="#">Termos de Uso</a>
+        <span class="divider">|</span>
+        <a href="#">Política de Privacidade</a>
+      </div>
+    </div>
+  </div>
 
-    <!-- Copyright -->
-    <div class="footer-copyright">
-      <p>© 2025 A2 Data Consultoria. Todos os direitos reservados.</p>
-    </div>
-  </footer>
+  <!-- Botão de Voltar ao Topo -->
+  <button id="back-to-top" aria-label="Voltar ao topo">
+    <i class="fas fa-chevron-up"></i>
+  </button>
+</footer>
 
   <!-- Ícone WhatsApp Fixo -->
   <a href="https://wa.me/5583989060130" class="whatsapp-float" target="_blank">
