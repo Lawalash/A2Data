@@ -573,6 +573,10 @@ body {
   align-items: center;
   gap: 10px;
 }
+/* Se você quiser ser mais específico e remover apenas do botão dentro do link */
+a .cta-secondary {
+  text-decoration: none;
+}
 
 .cta-secondary:hover {
   background: rgba(255, 255, 255, 0.1);
@@ -2396,4 +2400,9 @@ body {
     bottom: 15px;
   }
 }
+
+
+
+
+
 
