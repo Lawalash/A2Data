@@ -573,10 +573,15 @@ body {
   align-items: center;
   gap: 10px;
 }
-/* Se você quiser ser mais específico e remover apenas do botão dentro do link */
-a .cta-secondary {
+
+
+
+/* Se precisar de mais especificidade, você pode usar este seletor */
+.hero-content .cta-group a {
   text-decoration: none;
+  border-bottom: none;
 }
+
 
 .cta-secondary:hover {
   background: rgba(255, 255, 255, 0.1);
