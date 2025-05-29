@@ -1,0 +1,1108 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WhatsApp Marketing Pro</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            color: #333;
+            overflow-x: hidden;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .header {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(20px);
+            border-radius: 20px;
+            padding: 20px 30px;
+            margin-bottom: 30px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .header h1 {
+            color: #25D366;
+            font-size: 28px;
+            font-weight: 700;
+            margin-bottom: 5px;
+        }
+
+        .header p {
+            color: #666;
+            font-size: 16px;
+        }
+
+        .tabs {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 30px;
+            background: rgba(255, 255, 255, 0.1);
+            padding: 8px;
+            border-radius: 15px;
+            backdrop-filter: blur(10px);
+        }
+
+        .tab {
+            padding: 12px 24px;
+            background: transparent;
+            border: none;
+            border-radius: 10px;
+            color: white;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 14px;
+        }
+
+        .tab.active {
+            background: rgba(255, 255, 255, 0.9);
+            color: #333;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .tab:hover:not(.active) {
+            background: rgba(255, 255, 255, 0.2);
+        }
+
+        .content {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(20px);
+            border-radius: 20px;
+            padding: 30px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            min-height: 600px;
+        }
+
+        .section {
+            display: none;
+        }
+
+        .section.active {
+            display: block;
+        }
+
+        /* Campaign Creation */
+        .campaign-form {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+            margin-bottom: 30px;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: #333;
+        }
+
+        .form-group input,
+        .form-group textarea,
+        .form-group select {
+            width: 100%;
+            padding: 12px 16px;
+            border: 2px solid #e1e5e9;
+            border-radius: 10px;
+            font-size: 14px;
+            transition: all 0.3s ease;
+            background: #fff;
+        }
+
+        .form-group input:focus,
+        .form-group textarea:focus,
+        .form-group select:focus {
+            outline: none;
+            border-color: #25D366;
+            box-shadow: 0 0 0 3px rgba(37, 211, 102, 0.1);
+        }
+
+        .image-upload {
+            border: 2px dashed #e1e5e9;
+            border-radius: 10px;
+            padding: 40px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            background: #f8f9fa;
+        }
+
+        .image-upload:hover {
+            border-color: #25D366;
+            background: #f0f8f4;
+        }
+
+        .image-upload.has-image {
+            border-color: #25D366;
+            background: #f0f8f4;
+        }
+
+        .preview-image {
+            max-width: 200px;
+            max-height: 200px;
+            border-radius: 10px;
+            margin-bottom: 10px;
+        }
+
+        /* Contact Selection */
+        .contact-section {
+            display: grid;
+            grid-template-columns: 1fr 100px 1fr;
+            gap: 20px;
+            margin-top: 30px;
+            align-items: start;
+        }
+
+        .contacts-pool,
+        .selected-contacts {
+            background: #f8f9fa;
+            border-radius: 15px;
+            padding: 20px;
+            min-height: 400px;
+        }
+
+        .contacts-pool h3,
+        .selected-contacts h3 {
+            margin-bottom: 15px;
+            color: #333;
+            font-size: 18px;
+        }
+
+        .tag-filter {
+            display: flex;
+            gap: 8px;
+            margin-bottom: 15px;
+            flex-wrap: wrap;
+        }
+
+        .tag-btn {
+            padding: 6px 12px;
+            background: #e9ecef;
+            border: none;
+            border-radius: 20px;
+            font-size: 12px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .tag-btn.active {
+            background: #25D366;
+            color: white;
+        }
+
+        .contact-item {
+            background: white;
+            padding: 12px;
+            margin-bottom: 8px;
+            border-radius: 10px;
+            cursor: grab;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+            border-left: 4px solid #25D366;
+        }
+
+        .contact-item:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.15);
+        }
+
+        .contact-item.dragging {
+            opacity: 0.5;
+            transform: rotate(5deg);
+        }
+
+        .contact-name {
+            font-weight: 600;
+            color: #333;
+            margin-bottom: 4px;
+        }
+
+        .contact-phone {
+            color: #666;
+            font-size: 12px;
+            margin-bottom: 4px;
+        }
+
+        .contact-tag {
+            background: #25D366;
+            color: white;
+            padding: 2px 8px;
+            border-radius: 12px;
+            font-size: 10px;
+            display: inline-block;
+        }
+
+        .drag-area {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 15px;
+        }
+
+        .drag-arrow {
+            font-size: 24px;
+            color: #25D366;
+            animation: bounce 2s infinite;
+        }
+
+        @keyframes bounce {
+            0%, 20%, 50%, 80%, 100% { transform: translateX(0); }
+            40% { transform: translateX(-10px); }
+            60% { transform: translateX(10px); }
+        }
+
+        .drop-zone {
+            min-height: 60px;
+            border: 2px dashed #e1e5e9;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #666;
+            transition: all 0.3s ease;
+        }
+
+        .drop-zone.drag-over {
+            border-color: #25D366;
+            background: #f0f8f4;
+        }
+
+        /* Buttons */
+        .btn {
+            padding: 12px 24px;
+            border: none;
+            border-radius: 10px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 14px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #25D366, #128C7E);
+            color: white;
+            box-shadow: 0 4px 15px rgba(37, 211, 102, 0.3);
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(37, 211, 102, 0.4);
+        }
+
+        .btn-secondary {
+            background: #6c757d;
+            color: white;
+        }
+
+        .btn-secondary:hover {
+            background: #5a6268;
+        }
+
+        /* Monitoring */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        .stat-card {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            padding: 25px;
+            border-radius: 15px;
+            color: white;
+            text-align: center;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+        }
+
+        .stat-number {
+            font-size: 32px;
+            font-weight: 700;
+            margin-bottom: 5px;
+        }
+
+        .stat-label {
+            font-size: 14px;
+            opacity: 0.9;
+        }
+
+        .message-list {
+            background: #f8f9fa;
+            border-radius: 15px;
+            padding: 20px;
+            max-height: 400px;
+            overflow-y: auto;
+        }
+
+        .message-item {
+            background: white;
+            padding: 15px;
+            margin-bottom: 10px;
+            border-radius: 10px;
+            border-left: 4px solid #25D366;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .message-status {
+            display: inline-block;
+            padding: 4px 8px;
+            border-radius: 12px;
+            font-size: 10px;
+            font-weight: 600;
+            margin-bottom: 8px;
+        }
+
+        .status-sent { background: #e3f2fd; color: #1976d2; }
+        .status-delivered { background: #e8f5e8; color: #4caf50; }
+        .status-read { background: #f3e5f5; color: #9c27b0; }
+        .status-replied { background: #fff3e0; color: #ff9800; }
+
+        /* Attendances */
+        .attendance-list {
+            display: grid;
+            gap: 15px;
+        }
+
+        .attendance-item {
+            background: white;
+            padding: 20px;
+            border-radius: 15px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            border-left: 4px solid #25D366;
+        }
+
+        .attendance-header {
+            display: flex;
+            justify-content: between;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+
+        .customer-info {
+            flex: 1;
+        }
+
+        .customer-name {
+            font-weight: 600;
+            color: #333;
+            margin-bottom: 4px;
+        }
+
+        .customer-phone {
+            color: #666;
+            font-size: 14px;
+        }
+
+        .attendance-actions {
+            display: flex;
+            gap: 10px;
+            margin-top: 15px;
+        }
+
+        .btn-sm {
+            padding: 8px 16px;
+            font-size: 12px;
+        }
+
+        .btn-success { background: #28a745; color: white; }
+        .btn-warning { background: #ffc107; color: #333; }
+        .btn-info { background: #17a2b8; color: white; }
+
+        /* Reports */
+        .report-filters {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 30px;
+            flex-wrap: wrap;
+        }
+
+        .chart-container {
+            background: white;
+            padding: 25px;
+            border-radius: 15px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            margin-bottom: 30px;
+        }
+
+        .progress-bar {
+            background: #e9ecef;
+            border-radius: 10px;
+            height: 8px;
+            overflow: hidden;
+            margin-top: 10px;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #25D366, #128C7E);
+            transition: width 0.3s ease;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .campaign-form {
+                grid-template-columns: 1fr;
+            }
+            
+            .contact-section {
+                grid-template-columns: 1fr;
+            }
+            
+            .stats-grid {
+                grid-template-columns: 1fr 1fr;
+            }
+        }
+
+        /* Animation */
+        .fade-in {
+            animation: fadeIn 0.5s ease-in;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>📱 WhatsApp Marketing Pro</h1>
+            <p>Sistema completo de marketing e atendimento via WhatsApp</p>
+        </div>
+
+        <div class="tabs">
+            <button class="tab active" data-section="campaign">🚀 Nova Campanha</button>
+            <button class="tab" data-section="monitoring">📊 Monitoramento</button>
+            <button class="tab" data-section="attendance">💬 Atendimentos</button>
+            <button class="tab" data-section="reports">📈 Relatórios</button>
+            <button class="tab" data-section="contacts">👥 Contatos</button>
+        </div>
+
+        <div class="content">
+            <!-- Campaign Creation Section -->
+            <div class="section active" id="campaign">
+                <h2 style="margin-bottom: 30px;">🚀 Criar Nova Campanha</h2>
+                
+                <div class="campaign-form">
+                    <div>
+                        <div class="form-group">
+                            <label>Nome da Campanha</label>
+                            <input type="text" placeholder="Ex: Promoção São João 2025" value="Promoção São João 2025">
+                        </div>
+                        
+                        <div class="form-group">
+                            <label>Texto da Mensagem</label>
+                            <textarea rows="4" placeholder="Digite sua mensagem aqui...">Olá boa noite! 🌟 Estamos com ofertas imperdíveis para o São João! Somos da TechStore e gostaríamos de perguntar se você deseja se presentear ou presentear aquela pessoa querida! 🎁</textarea>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label>Opções Interativas</label>
+                            <div style="display: flex; flex-direction: column; gap: 10px;">
+                                <input type="text" value="📱 Promoção em capas" readonly>
+                                <input type="text" value="📲 Celulares" readonly>
+                                <input type="text" value="🔌 Acessórios para celular" readonly>
+                                <input type="text" value="❌ Não desejo nenhuma oferta" readonly>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div>
+                        <div class="form-group">
+                            <label>Imagem da Campanha</label>
+                            <div class="image-upload has-image" onclick="document.getElementById('image-input').click()">
+                                <img src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjAwIiBoZWlnaHQ9IjIwMCIgdmlld0JveD0iMCAwIDIwMCAyMDAiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CjxyZWN0IHdpZHRoPSIyMDAiIGhlaWdodD0iMjAwIiBmaWxsPSIjMjVEMzY2IiByeD0iMTAiLz4KPHN2ZyB4PSI1MCIgeT0iNTAiIHdpZHRoPSIxMDAiIGhlaWdodD0iMTAwIiB2aWV3Qm94PSIwIDAgMjQgMjQiIGZpbGw9IndoaXRlIj4KICA8cGF0aCBkPSJNMTIgMkM2LjQ4IDIgMiA2LjQ4IDIgMTJzNC40OCAxMCAxMCAxMCAxMC00LjQ4IDEwLTEwUzE3LjUyIDIgMTIgMnptMy41IDZMMTEgMTMuNSA4LjUgMTFsLTEuNDEgMS40MUwxMSAxNi40MSAxNi45MSA4LjVsLTEuNDEtMS41eiIvPgo8L3N2Zz4KPC9zdmc+" alt="Imagem da promoção" class="preview-image">
+                                <p style="color: #25D366; font-weight: 600;">✅ Imagem carregada com sucesso!</p>
+                                <p style="color: #666; font-size: 12px;">Clique para alterar</p>
+                            </div>
+                            <input type="file" id="image-input" accept="image/*" style="display: none;">
+                        </div>
+                    </div>
+                </div>
+
+                <div class="contact-section">
+                    <div class="contacts-pool">
+                        <h3>📋 Carteira de Contatos</h3>
+                        <div class="tag-filter">
+                            <button class="tag-btn active">Todos (100)</button>
+                            <button class="tag-btn">iPhone (30)</button>
+                            <button class="tag-btn">Android (40)</button>
+                            <button class="tag-btn">Acessórios (30)</button>
+                        </div>
+                        <div id="contactsList">
+                            <!-- Contacts will be populated by JavaScript -->
+                        </div>
+                    </div>
+
+                    <div class="drag-area">
+                        <div class="drag-arrow">➡️</div>
+                        <p style="color: #666; text-align: center; font-size: 12px;">Arraste os contatos para o lado direito</p>
+                        <div class="drag-arrow">➡️</div>
+                    </div>
+
+                    <div class="selected-contacts">
+                        <h3>🎯 Destinatários Selecionados</h3>
+                        <div class="drop-zone" id="dropZone">
+                            Arraste os contatos aqui
+                        </div>
+                        <div id="selectedContactsList">
+                            <!-- Selected contacts will appear here -->
+                        </div>
+                        <div style="margin-top: 15px; text-align: center;">
+                            <span id="selectedCount" style="font-weight: 600; color: #25D366;">0 contatos selecionados</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div style="margin-top: 30px; text-align: center;">
+                    <button class="btn btn-primary" onclick="launchCampaign()">🚀 Lançar Campanha</button>
+                    <button class="btn btn-secondary" style="margin-left: 15px;">💾 Salvar Rascunho</button>
+                </div>
+            </div>
+
+            <!-- Monitoring Section -->
+            <div class="section" id="monitoring">
+                <h2 style="margin-bottom: 30px;">📊 Monitoramento em Tempo Real</h2>
+                
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <div class="stat-number" id="messagesSent">87</div>
+                        <div class="stat-label">Mensagens Enviadas</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-number" id="messagesDelivered">84</div>
+                        <div class="stat-label">Entregues</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-number" id="messagesRead">76</div>
+                        <div class="stat-label">Lidas</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-number" id="messagesReplied">23</div>
+                        <div class="stat-label">Respondidas</div>
+                    </div>
+                </div>
+
+                <div class="message-list">
+                    <h3 style="margin-bottom: 20px;">📱 Últimas Atividades</h3>
+                    <div id="activityList">
+                        <!-- Activities will be populated by JavaScript -->
+                    </div>
+                </div>
+            </div>
+
+            <!-- Attendance Section -->
+            <div class="section" id="attendance">
+                <h2 style="margin-bottom: 30px;">💬 Atendimentos Pendentes</h2>
+                
+                <div class="attendance-list" id="attendanceList">
+                    <!-- Attendances will be populated by JavaScript -->
+                </div>
+            </div>
+
+            <!-- Reports Section -->
+            <div class="section" id="reports">
+                <h2 style="margin-bottom: 30px;">📈 Relatórios e Analytics</h2>
+                
+                <div class="report-filters">
+                    <select class="form-control">
+                        <option>Últimos 7 dias</option>
+                        <option>Últimos 30 dias</option>
+                        <option>Este mês</option>
+                    </select>
+                    <select class="form-control">
+                        <option>Todas as campanhas</option>
+                        <option>Promoção São João 2025</option>
+                        <option>Black Friday 2024</option>
+                    </select>
+                    <button class="btn btn-primary">📊 Gerar Relatório</button>
+                </div>
+
+                <div class="chart-container">
+                    <h3 style="margin-bottom: 20px;">Taxa de Conversão por Campanha</h3>
+                    <div style="margin-bottom: 15px;">
+                        <div style="display: flex; justify-content: space-between; margin-bottom: 5px;">
+                            <span>Promoção São João 2025</span>
+                            <span style="font-weight: 600;">26.4%</span>
+                        </div>
+                        <div class="progress-bar">
+                            <div class="progress-fill" style="width: 26.4%;"></div>
+                        </div>
+                    </div>
+                    <div style="margin-bottom: 15px;">
+                        <div style="display: flex; justify-content: space-between; margin-bottom: 5px;">
+                            <span>Black Friday 2024</span>
+                            <span style="font-weight: 600;">34.7%</span>
+                        </div>
+                        <div class="progress-bar">
+                            <div class="progress-fill" style="width: 34.7%;"></div>
+                        </div>
+                    </div>
+                    <div style="margin-bottom: 15px;">
+                        <div style="display: flex; justify-content: space-between; margin-bottom: 5px;">
+                            <span>Natal 2024</span>
+                            <span style="font-weight: 600;">18.9%</span>
+                        </div>
+                        <div class="progress-bar">
+                            <div class="progress-fill" style="width: 18.9%;"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Contacts Section -->
+            <div class="section" id="contacts">
+                <h2 style="margin-bottom: 30px;">👥 Gerenciar Contatos</h2>
+                
+                <div style="display: flex; gap: 15px; margin-bottom: 30px;">
+                    <button class="btn btn-primary">➕ Adicionar Contato</button>
+                    <button class="btn btn-secondary">📤 Importar CSV</button>
+                    <button class="btn btn-secondary">🏷️ Gerenciar Tags</button>
+                </div>
+
+                <div style="background: #f8f9fa; padding: 20px; border-radius: 15px;">
+                    <h3 style="margin-bottom: 20px;">📊 Resumo da Carteira</h3>
+                    <div class="stats-grid">
+                        <div class="stat-card" style="background: linear-gradient(135deg, #28a745, #20c997);">
+                            <div class="stat-number">100</div>
+                            <div class="stat-label">Total de Contatos</div>
+                        </div>
+                        <div class="stat-card" style="background: linear-gradient(135deg, #007bff, #6f42c1);">
+                            <div class="stat-number">30</div>
+                            <div class="stat-label">iPhone</div>
+                        </div>
+                        <div class="stat-card" style="background: linear-gradient(135deg, #fd7e14, #e83e8c);">
+                            <div class="stat-number">40</div>
+                            <div class="stat-label">Android</div>
+                        </div>
+                        <div class="stat-card" style="background: linear-gradient(135deg, #20c997, #17a2b8);">
+                            <div class="stat-number">30</div>
+                            <div class="stat-label">Acessórios</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Sample data
+        const contacts = [
+            {id: 1, name: "João Silva", phone: "(11) 99999-1234", tag: "iPhone"},
+            {id: 2, name: "Maria Santos", phone: "(11) 98888-5678", tag: "Android"},
+            {id: 3, name: "Pedro Costa", phone: "(11) 97777-9012", tag: "Acessórios"},
+            {id: 4, name: "Ana Oliveira", phone: "(11) 96666-3456", tag: "iPhone"},
+            {id: 5, name: "Carlos Ferreira", phone: "(11) 95555-7890", tag: "Android"},
+            {id: 6, name: "Lucia Pereira", phone: "(11) 94444-2345", tag: "iPhone"},
+            {id: 7, name: "Roberto Lima", phone: "(11) 93333-6789", tag: "Android"},
+            {id: 8, name: "Paula Rocha", phone: "(11) 92222-0123", tag: "Acessórios"},
+            {id: 9, name: "Felipe Gomes", phone: "(11) 91111-4567", tag: "iPhone"},
+            {id: 10, name: "Carla Dias", phone: "(11) 90000-8901", tag: "Android"}
+        ];
+
+        const activities = [
+            {contact: "João Silva", phone: "(11) 99999-1234", status: "replied", message: "Respondeu: Interessado em celulares", time: "14:32"},
+            {contact: "Maria Santos", phone: "(11) 98888-5678", status: "read", message: "Visualizou a mensagem", time: "14:28"},
+            {contact: "Pedro Costa", phone: "(11) 97777-9012", status: "delivered", message: "Mensagem entregue", time: "14:25"},
+            {contact: "Ana Oliveira", phone: "(11) 96666-3456", status: "sent", message: "Mensagem enviada", time: "14:20"}
+        ];
+
+        const attendances = [
+            {id: 1, name: "João Silva", phone: "(11) 99999-1234", interest: "Celulares", message: "Olá! Tenho interesse nos celulares. Vocês tem iPhone 15?", time: "14:32"},
+            {id: 2, name: "Carla Mendes", phone: "(11) 98765-4321", interest: "Promoção em capas", message: "Queria saber sobre as capas em promoção para Samsung", time: "14:15"},
+            {id: 3, name: "Roberto Santos", phone: "(11) 97654-3210", interest: "Acessórios", message: "Vocês tem carregador wireless?", time: "14:08"}
+        ];
+
+        let selectedContacts = [];
+
+        // Tab functionality
+        document.querySelectorAll('.tab').forEach(tab => {
+            tab.addEventListener('click', () => {
+                // Remove active class from all tabs and sections
+                document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+                document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+                
+                // Add active class to clicked tab
+                tab.classList.add('active');
+                
+                // Show corresponding section
+                const sectionId = tab.getAttribute('data-section');
+                document.getElementById(sectionId).classList.add('active');
+                
+                // Add fade-in animation
+                document.getElementById(sectionId).classList.add('fade-in');
+                setTimeout(() => {
+                    document.getElementById(sectionId).classList.remove('fade-in');
+                }, 500);
+            });
+        });
+
+        // Populate contacts list
+        function populateContacts(filter = 'all') {
+            const contactsList = document.getElementById('contactsList');
+            const filteredContacts = filter === 'all' ? contacts : contacts.filter(c => c.tag === filter);
+            
+            contactsList.innerHTML = filteredContacts.map(contact => `
+                <div class="contact-item" draggable="true" data-id="${contact.id}">
+                    <div class="contact-name">${contact.name}</div>
+                    <div class="contact-phone">${contact.phone}</div>
+                    <span class="contact-tag">${contact.tag}</span>
+                </div>
+            `).join('');
+            
+            // Add drag functionality
+            addDragFunctionality();
+        }
+
+        // Tag filter functionality
+        document.querySelectorAll('.tag-btn').forEach(btn => {
+            btn.addEventListener('click', () => {
+                document.querySelectorAll('.tag-btn').forEach(b => b.classList.remove('active'));
+                btn.classList.add('active');
+                
+                const filter = btn.textContent.includes('Todos') ? 'all' : 
+                             btn.textContent.includes('iPhone') ? 'iPhone' :
+                             btn.textContent.includes('Android') ? 'Android' : 'Acessórios';
+                
+                populateContacts(filter);
+            });
+        });
+
+        // Drag and drop functionality
+        function addDragFunctionality() {
+            const contactItems = document.querySelectorAll('.contact-item');
+            const dropZone = document.getElementById('dropZone');
+            
+            contactItems.forEach(item => {
+                item.addEventListener('dragstart', (e) => {
+                    e.dataTransfer.setData('text/plain', e.target.getAttribute('data-id'));
+                    e.target.classList.add('dragging');
+                });
+                
+                item.addEventListener('dragend', (e) => {
+                    e.target.classList.remove('dragging');
+                });
+            });
+            
+            dropZone.addEventListener('dragover', (e) => {
+                e.preventDefault();
+                dropZone.classList.add('drag-over');
+            });
+            
+            dropZone.addEventListener('dragleave', () => {
+                dropZone.classList.remove('drag-over');
+            });
+            
+            dropZone.addEventListener('drop', (e) => {
+                e.preventDefault();
+                dropZone.classList.remove('drag-over');
+                
+                const contactId = parseInt(e.dataTransfer.getData('text/plain'));
+                const contact = contacts.find(c => c.id === contactId);
+                
+                if (contact && !selectedContacts.find(c => c.id === contactId)) {
+                    selectedContacts.push(contact);
+                    updateSelectedContacts();
+                }
+            });
+        }
+
+        // Update selected contacts display
+        function updateSelectedContacts() {
+            const selectedList = document.getElementById('selectedContactsList');
+            const selectedCount = document.getElementById('selectedCount');
+            
+            if (selectedContacts.length === 0) {
+                selectedList.innerHTML = '';
+                document.getElementById('dropZone').style.display = 'flex';
+            } else {
+                document.getElementById('dropZone').style.display = 'none';
+                selectedList.innerHTML = selectedContacts.map(contact => `
+                    <div class="contact-item" style="position: relative;">
+                        <div class="contact-name">${contact.name}</div>
+                        <div class="contact-phone">${contact.phone}</div>
+                        <span class="contact-tag">${contact.tag}</span>
+                        <button onclick="removeContact(${contact.id})" style="position: absolute; top: 5px; right: 5px; background: #dc3545; color: white; border: none; border-radius: 50%; width: 20px; height: 20px; font-size: 12px; cursor: pointer;">×</button>
+                    </div>
+                `).join('');
+            }
+            
+            selectedCount.textContent = `${selectedContacts.length} contatos selecionados`;
+        }
+
+        // Remove contact from selection
+        function removeContact(contactId) {
+            selectedContacts = selectedContacts.filter(c => c.id !== contactId);
+            updateSelectedContacts();
+        }
+
+        // Populate activities
+        function populateActivities() {
+            const activityList = document.getElementById('activityList');
+            
+            activityList.innerHTML = activities.map(activity => `
+                <div class="message-item">
+                    <span class="message-status status-${activity.status}">
+                        ${activity.status === 'sent' ? '📤 Enviado' :
+                          activity.status === 'delivered' ? '✅ Entregue' :
+                          activity.status === 'read' ? '👁️ Lido' : '💬 Respondido'}
+                    </span>
+                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
+                        <strong>${activity.contact}</strong>
+                        <span style="color: #666; font-size: 12px;">${activity.time}</span>
+                    </div>
+                    <div style="color: #666; font-size: 14px;">${activity.phone}</div>
+                    <div style="margin-top: 8px; font-size: 14px;">${activity.message}</div>
+                </div>
+            `).join('');
+        }
+
+        // Populate attendances
+        function populateAttendances() {
+            const attendanceList = document.getElementById('attendanceList');
+            
+            attendanceList.innerHTML = attendances.map(attendance => `
+                <div class="attendance-item">
+                    <div class="attendance-header">
+                        <div class="customer-info">
+                            <div class="customer-name">${attendance.name}</div>
+                            <div class="customer-phone">${attendance.phone}</div>
+                        </div>
+                        <div style="text-align: right;">
+                            <div style="font-size: 12px; color: #666;">${attendance.time}</div>
+                            <div style="font-size: 12px; color: #25D366; font-weight: 600;">Interesse: ${attendance.interest}</div>
+                        </div>
+                    </div>
+                    <div style="background: #f8f9fa; padding: 12px; border-radius: 8px; margin-bottom: 15px; font-style: italic;">
+                        "${attendance.message}"
+                    </div>
+                    <div class="attendance-actions">
+                        <button class="btn btn-success btn-sm" onclick="tabulateAttendance(${attendance.id}, 'accepted')">
+                            ✅ Aceitou
+                        </button>
+                        <button class="btn btn-warning btn-sm" onclick="tabulateAttendance(${attendance.id}, 'expensive')">
+                            💰 Achou Caro
+                        </button>
+                        <button class="btn btn-info btn-sm" onclick="tabulateAttendance(${attendance.id}, 'doubt')">
+                            ❓ Só Dúvidas
+                        </button>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        // Tabulate attendance
+        function tabulateAttendance(attendanceId, result) {
+            const attendance = attendances.find(a => a.id === attendanceId);
+            if (attendance) {
+                let message = '';
+                switch(result) {
+                    case 'accepted':
+                        message = `✅ ${attendance.name} foi marcado como "ACEITOU A COMPRA"`;
+                        break;
+                    case 'expensive':
+                        message = `💰 ${attendance.name} foi marcado como "ACHOU CARO"`;
+                        break;
+                    case 'doubt':
+                        message = `❓ ${attendance.name} foi marcado como "SÓ DÚVIDAS"`;
+                        break;
+                }
+                
+                // Show success message
+                showNotification(message, 'success');
+                
+                // Remove from attendances list
+                const index = attendances.findIndex(a => a.id === attendanceId);
+                if (index > -1) {
+                    attendances.splice(index, 1);
+                    populateAttendances();
+                }
+            }
+        }
+
+        // Launch campaign function
+        function launchCampaign() {
+            if (selectedContacts.length === 0) {
+                showNotification('❌ Selecione pelo menos um contato para enviar a campanha!', 'error');
+                return;
+            }
+            
+            // Show loading animation
+            const btn = event.target;
+            const originalText = btn.innerHTML;
+            btn.innerHTML = '🚀 Enviando...';
+            btn.disabled = true;
+            
+            // Simulate campaign launch
+            setTimeout(() => {
+                showNotification(`🚀 Campanha lançada com sucesso para ${selectedContacts.length} contatos!`, 'success');
+                btn.innerHTML = originalText;
+                btn.disabled = false;
+                
+                // Switch to monitoring tab
+                document.querySelector('[data-section="monitoring"]').click();
+                
+                // Start real-time updates
+                startRealTimeUpdates();
+            }, 2000);
+        }
+
+        // Show notification
+        function showNotification(message, type) {
+            const notification = document.createElement('div');
+            notification.style.cssText = `
+                position: fixed;
+                top: 20px;
+                right: 20px;
+                padding: 15px 20px;
+                border-radius: 10px;
+                color: white;
+                font-weight: 600;
+                font-size: 14px;
+                z-index: 1000;
+                max-width: 400px;
+                box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+                transform: translateX(100%);
+                transition: transform 0.3s ease;
+                ${type === 'success' ? 'background: linear-gradient(135deg, #28a745, #20c997);' : 'background: linear-gradient(135deg, #dc3545, #e83e8c);'}
+            `;
+            
+            notification.textContent = message;
+            document.body.appendChild(notification);
+            
+            // Animate in
+            setTimeout(() => {
+                notification.style.transform = 'translateX(0)';
+            }, 100);
+            
+            // Animate out and remove
+            setTimeout(() => {
+                notification.style.transform = 'translateX(100%)';
+                setTimeout(() => {
+                    document.body.removeChild(notification);
+                }, 300);
+            }, 4000);
+        }
+
+        // Start real-time updates for monitoring
+        function startRealTimeUpdates() {
+            let sent = 0;
+            let delivered = 0;
+            let read = 0;
+            let replied = 0;
+            
+            const interval = setInterval(() => {
+                if (sent < selectedContacts.length) {
+                    sent++;
+                    document.getElementById('messagesSent').textContent = sent;
+                    
+                    setTimeout(() => {
+                        if (delivered < sent && Math.random() > 0.1) {
+                            delivered++;
+                            document.getElementById('messagesDelivered').textContent = delivered;
+                        }
+                    }, 1000 + Math.random() * 2000);
+                    
+                    setTimeout(() => {
+                        if (read < delivered && Math.random() > 0.2) {
+                            read++;
+                            document.getElementById('messagesRead').textContent = read;
+                        }
+                    }, 3000 + Math.random() * 3000);
+                    
+                    setTimeout(() => {
+                        if (replied < read && Math.random() > 0.7) {
+                            replied++;
+                            document.getElementById('messagesReplied').textContent = replied;
+                            
+                            // Add new attendance
+                            const randomContact = selectedContacts[Math.floor(Math.random() * selectedContacts.length)];
+                            const interests = ['Celulares', 'Promoção em capas', 'Acessórios'];
+                            const messages = [
+                                'Tenho interesse nos produtos. Podem me passar mais informações?',
+                                'Vocês fazem entrega? Qual o prazo?',
+                                'Gostaria de saber os preços.',
+                                'Tem desconto para pagamento à vista?'
+                            ];
+                            
+                            attendances.push({
+                                id: Date.now(),
+                                name: randomContact.name,
+                                phone: randomContact.phone,
+                                interest: interests[Math.floor(Math.random() * interests.length)],
+                                message: messages[Math.floor(Math.random() * messages.length)],
+                                time: new Date().toLocaleTimeString('pt-BR', {hour: '2-digit', minute: '2-digit'})
+                            });
+                            
+                            populateAttendances();
+                        }
+                    }, 5000 + Math.random() * 5000);
+                } else {
+                    clearInterval(interval);
+                }
+            }, 2000);
+        }
+
+        // Image upload handling
+        document.getElementById('image-input').addEventListener('change', function(e) {
+            const file = e.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    const imageUpload = document.querySelector('.image-upload');
+                    imageUpload.innerHTML = `
+                        <img src="${e.target.result}" alt="Imagem da campanha" class="preview-image">
+                        <p style="color: #25D366; font-weight: 600;">✅ Imagem carregada com sucesso!</p>
+                        <p style="color: #666; font-size: 12px;">Clique para alterar</p>
+                    `;
+                    imageUpload.classList.add('has-image');
+                };
+                reader.readAsDataURL(file);
+            }
+        });
+
+        // Initialize the application
+        document.addEventListener('DOMContentLoaded', function() {
+            populateContacts();
+            populateActivities();
+            populateAttendances();
+            
+            // Add some initial animation
+            setTimeout(() => {
+                document.querySelector('.container').style.opacity = '1';
+                document.querySelector('.container').style.transform = 'translateY(0)';
+            }, 100);
+        });
+
+        // Add initial styles for animation
+        document.querySelector('.container').style.cssText += `
+            opacity: 0;
+            transform: translateY(20px);
+            transition: all 0.5s ease;
+        `;
+    </script>
+
+    </body>
+</html>
